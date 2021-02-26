@@ -1,4 +1,4 @@
-package com.example.stomanage;
+package com.SandY.stomanage;
 
 import org.junit.Test;
 

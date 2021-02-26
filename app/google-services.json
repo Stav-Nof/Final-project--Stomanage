@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:948816398373:android:78fcff303da53043d617cc",
+        "mobilesdk_app_id": "1:948816398373:android:565e99fda6950ed3d617cc",
         "android_client_info": {
-          "package_name": "com.example.stomanage"
+          "package_name": "com.SandY.stomanage"
         }
       },
       "oauth_client": [
