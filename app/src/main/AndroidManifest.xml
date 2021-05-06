@@ -2,6 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.SandY.stomanage">
 
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,7 +14,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Stomanage">
-        <activity android:name=".Administrator.Troop"/>
+        <activity android:name=".HeadWarehouseTeam.storekeeper"/>
+        <activity android:name=".HeadWarehouseTeam.HeadWarehouseTeamMainMenu"/>
+        <activity android:name=".Administrator.Warehouses"/>
+        <activity android:name=".Administrator.TroopSelectToWarehouses"/>
+        <activity android:name=".Administrator.NewEquipment"/>
+        <activity android:name=".Administrator.Equipment"/>
+        <activity android:name=".Administrator.NewUser"/>
+        <activity android:name=".Administrator.Regiment"/>
+        <activity android:name=".Administrator.Users"/>
+        <activity android:name=".Administrator.NewTroop"/>
+        <activity android:name=".Administrator.Troops"/>
         <activity android:name=".Administrator.AdministratorMainMenu"/>
         <activity android:name=".MainActivity">
             <intent-filter>

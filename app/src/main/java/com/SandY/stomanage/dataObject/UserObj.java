@@ -14,81 +14,57 @@ import com.google.firebase.database.ValueEventListener;
 import java.io.Serializable;
 
 public class UserObj implements Serializable {
-    private String fname;
-    private String lname;
-    private String id;
-    private String troop;
+    private String firstName;
+    private String lastName;
     private String email;
-    private String phone;
+    private String troop;
+    private String leadership;
     private String userPerm;
     private String Responsibility;
 
     public UserObj(){}
 
-    public UserObj(String fname, String lname, String id, String troop, String email, String phone, String userPerm, String Responsibility){
-        this.fname = fname;
-        this.lname = lname;
-        this.id = id;
-        this.troop = troop;
+    public UserObj(String fname, String lname, String email, String troop, String leadership, String userPerm, String Responsibility){
+        this.firstName = fname;
+        this.lastName = lname;
         this.email = email;
-        this.phone = phone;
+        this.troop = troop;
+        this.leadership = leadership;
         this.userPerm = userPerm;
         this.Responsibility = Responsibility;
     }
 
-    public void WritToDB(String Uid){
+    public void WriteToDB(String Uid){
         DatabaseReference DBRef = DBRef = FirebaseDatabase.getInstance().getReference();
         DBRef.child("Users").child(Uid).setValue(this);
     }
 
-    public void ReadFromDB(String Uid){
-        UserObj user = this;
-        DatabaseReference DBRef = FirebaseDatabase.getInstance().getReference().child("Users").child(Uid);
-        DBRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                GetUserFromSnapshot(snapshot, user);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+    public void updateToDB(String Uid){
+        DatabaseReference DBRef = FirebaseDatabase.getInstance().getReference();
+        DBRef = DBRef.child("Users").child(Uid);
+        DBRef.setValue(this);
     }
 
-    private static void GetUserFromSnapshot(DataSnapshot snapshot, UserObj user){
-        user = snapshot.getValue(UserObj.class);
+    public static void deletFromDB(String Uid){
+        DatabaseReference DBRef = FirebaseDatabase.getInstance().getReference();
+        DBRef = DBRef.child("Users").child(Uid);
+        DBRef.setValue(null);
     }
 
-    public String getFname() { return fname; }
-
-    public void setFname(String fname) {
-        this.fname = fname;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public String getLname() {
-        return lname;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public void setLname(String lname) {
-        this.lname = lname;
+    public String getLastName() {
+        return lastName;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getTroop() {
-        return troop;
-    }
-
-    public void setTroop(String troop) {
-        this.troop = troop;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public String getEmail() {
@@ -99,12 +75,20 @@ public class UserObj implements Serializable {
         this.email = email;
     }
 
-    public String getPhone() {
-        return phone;
+    public String getTroop() {
+        return troop;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setTroop(String troop) {
+        this.troop = troop;
+    }
+
+    public String getLeadership() {
+        return leadership;
+    }
+
+    public void setLeadership(String leadership) {
+        this.leadership = leadership;
     }
 
     public String getUserPerm() {
@@ -115,7 +99,11 @@ public class UserObj implements Serializable {
         this.userPerm = userPerm;
     }
 
-    public String getResponsibility() { return Responsibility; }
+    public String getResponsibility() {
+        return Responsibility;
+    }
 
-    public void setResponsibility(String responsibility) { Responsibility = responsibility; }
+    public void setResponsibility(String responsibility) {
+        Responsibility = responsibility;
+    }
 }

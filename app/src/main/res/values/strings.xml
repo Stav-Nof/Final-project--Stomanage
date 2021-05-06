@@ -1,6 +1,75 @@
 <resources>
+    <!--global-->
     <string name="app_name">Stomanage</string>
     <string name="welcome">Welcome </string>
-    <string name="troops">Troops </string>
+    <string name="ok">ok</string>
+    <string name="cancel">cancel</string>
+    <string name="delete">delete</string>
+    <string name="add">Add</string>
+    <string name="perm_needed">Permission needed</string>
+    <string name="storage_perm_message_read">In order to select an image it is necessary to confirm the storage Permission</string>
+    <string name="storage_perm_message_write">In order to see the images it is necessary to confirm the storage Permission</string>
+    <string name="uploading_success">File uploaded successfully</string>
+    <string name="uploading">Uploading please wait</string>
+    <string name="name_already_exists">this name already exists</string>
+    <!--troop and regiment-->
+    <string name="troops">Troops</string>
+    <string name="troop_name">Enter troop name</string>
+    <string name="new_troop">Creating a new troop</string>
+    <string name="select_image">Select\nan image</string>
+    <string name="troop_image">troop image</string>
+    <string name="regiment">Regiment</string>
+    <string name="regiment_name">Enter regiment name</string>
+    <string name="troopobj_not_found">There was a problem: The troop you were looking for was not found</string>
+    <string name="no_regiment_in_troop">There are no regiment in the chosen troop</string>
+    <string name="enter_age_group">enter age group</string>
+    <string name="age_group_already_exists">this age group already exists</string>
+    <string name="delete_regiment_message">Are you sure you want to delete this regiment?</string>
+    <string name="delete_troop_message">Are you sure you want to delete this troop?</string>
+    <string name="select_leadership_error">Please select leadership</string>
+    <!--users-->
+    <string name="users">users</string>
+    <string name="user_name">Enter user name</string>
+    <string name="new_user">Creating a new user</string>
+    <string name="first_name">First name</string>
+    <string name="last_name">Last Name</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="select_leadership">Select leadership</string>
+    <string name="select_troop">Select troop</string>
+    <string name="select_role">Select role</string>
+    <string name="first_name_error">Enter first name</string>
+    <string name="last_name_error">Enter last name</string>
+    <string name="email_error">Enter email</string>
+    <string name="password_error">Enter password</string>
+    <string name="confirm_Password_error">Enter password again</string>
+    <string name="select_troop_error">Please select troop</string>
+    <string name="select_role_error">Please select role</string>
+    <string name="password_match_error">Password not match</string>
+    <string name="password_length_error">Password must be at least 6 characters long</string>
+    <!--equipment-->
+    <string name="equipment">Equipment</string>
+    <string name="enter_equipment_name">Enter equipment name</string>
+    <string name="new_equipment">Creating a new Equipment</string>
+    <string name="equipment_name">Equipment name</string>
+    <string name="returnedable">Returnedable equipment</string>
+    <string name="supplier_name">Supplier name</string>
+    <!--warehouses-->
+    <string name="warehouses">warehouses</string>
+    <string name="update_quantity">Update quantity</string>
+    <string name="update">Update</string>
+    <!--factories-->
+    <string name="factories">factories</string>
+    <!--storekeeper-->
+    <string name="storekeeper">Storekeeper</string>
+    <!--Orders-->
+    <string name="orders">Orders</string>
+    <!--New order-->
+    <string name="new_order">New order</string>
+    <!--open orders-->
+    <string name="open_orders">Open orders</string>
+    <!--Order history-->
+    <string name="order_history">Order history</string>
 
 </resources>

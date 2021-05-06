@@ -67,7 +67,7 @@
                     android:orientation="horizontal">
 
                     <androidx.cardview.widget.CardView
-                        android:id="@+id/userCard"
+                        android:id="@+id/storekeeperCard"
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
@@ -96,7 +96,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="10dp"
-                                android:text="@string/users"
+                                android:text="@string/storekeeper"
                                 android:textColor="@color/black"
                                 android:textSize="20sp"/>
 
@@ -105,7 +105,7 @@
                     </androidx.cardview.widget.CardView>
 
                     <androidx.cardview.widget.CardView
-                        android:id="@+id/troopCard"
+                        android:id="@+id/ordersCard"
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
@@ -128,13 +128,13 @@
                             <ImageView
                                 android:layout_width="150dp"
                                 android:layout_height="140dp"
-                                android:src="@drawable/troops"/>
+                                android:src="@drawable/orders"/>
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="10dp"
-                                android:text="@string/troops"
+                                android:text="@string/orders"
                                 android:textColor="@color/black"
                                 android:textSize="20sp"/>
 
@@ -212,13 +212,13 @@
                             <ImageView
                                 android:layout_width="150dp"
                                 android:layout_height="140dp"
-                                android:src="@drawable/warehouses"/>
+                                android:src="@drawable/new_order"/>
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="10dp"
-                                android:text="@string/warehouses"
+                                android:text="@string/new_order"
                                 android:textColor="@color/black"
                                 android:textSize="20sp"/>
 
@@ -258,13 +258,13 @@
                             <ImageView
                                 android:layout_width="150dp"
                                 android:layout_height="140dp"
-                                android:src="@drawable/factories"/>
+                                android:src="@drawable/open_orders"/>
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="10dp"
-                                android:text="@string/factories"
+                                android:text="@string/open_orders"
                                 android:textColor="@color/black"
                                 android:textSize="20sp"/>
 
@@ -295,13 +295,14 @@
 
                             <ImageView
                                 android:layout_width="150dp"
-                                android:layout_height="140dp"/>
+                                android:layout_height="140dp"
+                                android:src="@drawable/open_orders"/>
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="10dp"
-                                android:text=""
+                                android:text="@string/order_history"
                                 android:textColor="@color/black"
                                 android:textSize="20sp"/>
 

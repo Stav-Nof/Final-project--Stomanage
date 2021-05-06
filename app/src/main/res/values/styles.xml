@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowAnimationStyle">@style/popUpAnimation</item>
     </style>
 
@@ -9,8 +9,5 @@
         <item name="android:windowExitAnimation">@android:anim/fade_out</item>
     </style>
 
-    <style name="MyButton" parent="Widget.AppCompat.Button">
-        <item name="android:background">@drawable/custom_button_1_sm</item>
-        <item name="backgroundTint">@null</item>
-    </style>
+    <attr name="no_image" format="reference"/>
 </resources>
