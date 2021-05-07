@@ -1,37 +1,26 @@
 package com.SandY.stomanage.dataObject;
 
-
-import android.view.View;
-
-import androidx.annotation.NonNull;
-
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
 import java.io.Serializable;
 
 public class UserObj implements Serializable {
     private String firstName;
     private String lastName;
     private String email;
-    private String troop;
-    private String leadership;
+    private String tid;
     private String userPerm;
     private String Responsibility;
 
     public UserObj(){}
 
-    public UserObj(String fname, String lname, String email, String troop, String leadership, String userPerm, String Responsibility){
+    public UserObj(String fname, String lname, String email, String tid, String userPerm){
         this.firstName = fname;
         this.lastName = lname;
         this.email = email;
-        this.troop = troop;
-        this.leadership = leadership;
+        this.tid = tid;
         this.userPerm = userPerm;
-        this.Responsibility = Responsibility;
+        this.Responsibility = null;
     }
 
     public void WriteToDB(String Uid){
@@ -75,22 +64,6 @@ public class UserObj implements Serializable {
         this.email = email;
     }
 
-    public String getTroop() {
-        return troop;
-    }
-
-    public void setTroop(String troop) {
-        this.troop = troop;
-    }
-
-    public String getLeadership() {
-        return leadership;
-    }
-
-    public void setLeadership(String leadership) {
-        this.leadership = leadership;
-    }
-
     public String getUserPerm() {
         return userPerm;
     }
@@ -105,5 +78,13 @@ public class UserObj implements Serializable {
 
     public void setResponsibility(String responsibility) {
         Responsibility = responsibility;
+    }
+
+    public String getTid() {
+        return tid;
+    }
+
+    public void setTid(String tid) {
+        this.tid = tid;
     }
 }

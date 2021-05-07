@@ -17,6 +17,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -38,7 +40,7 @@ public class Warehouses extends AppCompatActivity {
     private static final int WRITE_EXTERNAL_STORAGE_CODE = 819;
 
     String tid;
-    TroopObj troop;
+    String troopName;
 
     EditText _search;
     ListView _itemslist;
@@ -46,9 +48,11 @@ public class Warehouses extends AppCompatActivity {
     ImageButton _clear;
 
     List<String> Ename;
-    List<String> EID;
+    List<String> eid;
     List<String> EnameToPrint;
     List<String> quantity;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +60,8 @@ public class Warehouses extends AppCompatActivity {
         setContentView(R.layout.template_activity_listview_search);
 
         Intent intent = getIntent();
-        tid = intent.getStringExtra("TroopID");
+        troopName = intent.getStringExtra("troopName");
+        tid = intent.getStringExtra("tid");
 
         downloadPermissions();
         attachFromXml();
@@ -101,23 +106,7 @@ public class Warehouses extends AppCompatActivity {
     }
 
     private void modifyActivity(){
-        DatabaseReference DBRef = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference ref = DBRef.child("Troops").child(tid);
-        ValueEventListener valueEventListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                troop = dataSnapshot.getValue(TroopObj.class);
-                _header.setText(troop.get_name() + " - " + getResources().getString(R.string.troops));
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                //TODO set error
-                finish();
-            }
-        };
-        ref.addListenerForSingleValueEvent(valueEventListener);
-
+        _header.setText(troopName + " - " + getResources().getString(R.string.warehouses));
         _search.setHint(getResources().getString(R.string.troop_name));
         _clear.setVisibility(View.INVISIBLE);
     }
@@ -125,35 +114,50 @@ public class Warehouses extends AppCompatActivity {
     private void printItemList(String search){
         DatabaseReference DBRef = FirebaseDatabase.getInstance().getReference();
         DatabaseReference ref = DBRef.child("Equipment");
-        ValueEventListener valueEventListener = new ValueEventListener() {
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Ename = new ArrayList<>();
-                EID = new ArrayList<>();
-                for(DataSnapshot ds : dataSnapshot.getChildren()) {
-                    EID.add(ds.getKey());
+                eid = new ArrayList<>();
+                for(DataSnapshot ds : snapshot.getChildren()) {
+                    eid.add(ds.getKey());
                     Ename.add(ds.child("_name").getValue(String.class));
                 }
-                troop.warehouseInitialization();
                 quantity = new ArrayList<>();
                 EnameToPrint = new ArrayList<>();
-                for ( int i = 0; EID.size() > i ; i++ ){
-                    if(Ename.get(i).contains(search)){
-                        if (troop.get_warehouse().containsKey(EID.get(i))) quantity.add(troop.get_warehouse().get(EID.get(i)).toString());
-                        else quantity.add("0");
-                        EnameToPrint.add(Ename.get(i));
+                DatabaseReference warehousesRef = DBRef.child("Warehouses").child(tid);
+                warehousesRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot warehousesSnapshot) {
+                        for ( int i = 0; eid.size() > i ; i++ ){
+                            if(Ename.get(i).contains(search)){
+                                if (warehousesSnapshot.hasChild(eid.get(i))){
+                                    Double quantityinDB = warehousesSnapshot.child(eid.get(i)).getValue(Double.class);
+                                    quantity.add(Double.toString(quantityinDB));
+                                    EnameToPrint.add(Ename.get(i));
+                                }
+                                else {
+                                    quantity.add("0");
+                                    EnameToPrint.add(Ename.get(i));
+                                }
+                            }
+                        }
+                        AdapterTextSubTextImage adapter = new AdapterTextSubTextImage(Warehouses.this, EnameToPrint, quantity, "Equipment", ".png", getResources().getDrawable(R.drawable.image_not_available));
+                        _itemslist.setAdapter(adapter);
                     }
-                }
-                AdapterTextSubTextImage adapter = new AdapterTextSubTextImage(Warehouses.this, EnameToPrint, quantity, "Equipment", ".png", getResources().getDrawable(R.drawable.image_not_available));
-                _itemslist.setAdapter(adapter);
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
             }
+
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-                //TODO set error
-                finish();
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
-        };
-        ref.addListenerForSingleValueEvent(valueEventListener);
+        });
     }
 
     private void searchAction(){
@@ -206,8 +210,8 @@ public class Warehouses extends AppCompatActivity {
                         }
 
                         DatabaseReference DBRef = FirebaseDatabase.getInstance().getReference();
-                        DBRef.child("Troops").child(tid).child("_warehouse").child(EID.get(Ename.indexOf(EnameToPrint.get(position)))).setValue(Double.parseDouble(fieldDialog.getText().toString()));
-                        troop.get_warehouse().replace(EID.get(Ename.indexOf(EnameToPrint.get(position))), Double.parseDouble(fieldDialog.getText().toString()));
+                        DatabaseReference ref = DBRef.child("Warehouses").child(tid).child(eid.get(Ename.indexOf(EnameToPrint.get(position))));
+                        ref.setValue(Double.parseDouble(fieldDialog.getText().toString()));
                         dialog.dismiss();
                         printItemList(_search.getText().toString());
 

@@ -26,8 +26,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Troops extends AppCompatActivity {
@@ -42,6 +42,7 @@ public class Troops extends AppCompatActivity {
 
     List<String> items;
     List<String> subItems;
+    List<String> tids;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,7 +103,6 @@ public class Troops extends AppCompatActivity {
         _header.setText(getResources().getString(R.string.troops));
         _search.setHint(getResources().getString(R.string.troop_name));
         _clear.setVisibility(View.INVISIBLE);
-
     }
 
     private void setClicks(){
@@ -127,6 +127,7 @@ public class Troops extends AppCompatActivity {
                 String troopClicked = items.get(position);
                 Intent intent = new Intent(Troops.this, Regiment.class);
                 intent.putExtra("troopName", troopClicked);
+                intent.putExtra("tid", tids.get(position));
                 startActivity(intent);
             }
         });
@@ -187,14 +188,16 @@ public class Troops extends AppCompatActivity {
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                tids = new ArrayList<>();
                 items = new ArrayList<>();
                 subItems = new ArrayList<>();
                 for(DataSnapshot ds : dataSnapshot.getChildren()) {
-                    String item = ds.child("_name").getValue(String.class);
-                    String  subItem = ds.child("_leadership").getValue(String.class);
-                    if (item.contains(search)){
-                        items.add(item);
-                        subItems.add(subItem);
+                    String key = ds.getKey();
+                    TroopObj troop = ds.getValue(TroopObj.class);
+                    if (troop.get_name().contains(search)){
+                        tids.add(key);
+                        items.add(troop.get_name());
+                        subItems.add(troop.get_leadership());
                     }
                 }
                 AdapterTextSubTextImage adapter = new AdapterTextSubTextImage(Troops.this, items, subItems, "Troops", ".png", getResources().getDrawable(R.drawable.image_not_available));

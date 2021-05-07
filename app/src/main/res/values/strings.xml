@@ -12,6 +12,8 @@
     <string name="uploading_success">File uploaded successfully</string>
     <string name="uploading">Uploading please wait</string>
     <string name="name_already_exists">this name already exists</string>
+    <!--login-->
+    <string name="login">Login</string>
     <!--troop and regiment-->
     <string name="troops">Troops</string>
     <string name="troop_name">Enter troop name</string>
@@ -71,5 +73,6 @@
     <string name="open_orders">Open orders</string>
     <!--Order history-->
     <string name="order_history">Order history</string>
-
+    <!--storekeepers-->
+    <string name="storekeepers">Storekeepers</string>
 </resources>

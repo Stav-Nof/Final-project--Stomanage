@@ -111,9 +111,9 @@ public class TroopSelectToWarehouses extends AppCompatActivity {
         _itemslist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String troopIdClicked = TID.get(position);
                 Intent intent = new Intent(TroopSelectToWarehouses.this, Warehouses.class);
-                intent.putExtra("TroopID", troopIdClicked);
+                intent.putExtra("troopName", items.get(position));
+                intent.putExtra("tid", TID.get(position));
                 startActivity(intent);
             }
         });

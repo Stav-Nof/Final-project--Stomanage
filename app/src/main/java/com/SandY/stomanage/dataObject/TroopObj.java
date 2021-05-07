@@ -30,13 +30,11 @@ public class TroopObj implements Serializable {
 
     private String _name;
     private String _leadership;
-    private HashMap<String, String> _regiments;
     private HashMap<String, Double> _warehouse;
 
     public TroopObj(String _name, String _leadership) {
         this._name = _name;
         this._leadership = _leadership;
-        _regiments = new HashMap<>();
         _warehouse = new HashMap<>();
     }
 
@@ -77,27 +75,12 @@ public class TroopObj implements Serializable {
         this._name = _name;
     }
 
-    public HashMap<String, String> get_regiments() {
-        return _regiments;
-    }
-
-    public void set_regiments(HashMap<String, String> _regiments) {
-        this._regiments = _regiments;
-    }
-
     public HashMap<String, Double> get_warehouse() {
         return _warehouse;
     }
 
     public void set_warehouse(HashMap<String, Double> _warehouse) {
         this._warehouse = _warehouse;
-    }
-
-    public void regimentsInitialization(){
-        if(_regiments == null) {
-            _regiments = new HashMap<>();
-        }
-        return;
     }
 
     public void warehouseInitialization(){

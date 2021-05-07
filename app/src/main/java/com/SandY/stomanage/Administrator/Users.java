@@ -7,10 +7,13 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.SandY.stomanage.Adapters.AdapterTextSubText;
 import com.SandY.stomanage.R;
+import com.SandY.stomanage.dataObject.TroopObj;
 import com.SandY.stomanage.dataObject.UserObj;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -18,6 +21,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class Users extends AppCompatActivity {
@@ -29,7 +33,8 @@ public class Users extends AppCompatActivity {
     ImageButton _clear;
 
     ArrayList <String> usersNames;
-    ArrayList <String> troops;
+    ArrayList <String> troopsNames;
+    HashMap<String, TroopObj> troops;
 
 
     @Override
@@ -72,20 +77,40 @@ public class Users extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 usersNames = new ArrayList<>();
-                troops = new ArrayList<>();
-                for(DataSnapshot ds : dataSnapshot.getChildren()) {
-                    UserObj user = ds.getValue(UserObj.class);
-                    if (user.getFirstName().contains(search) || user.getFirstName().contains(search) || user.getTroop().contains(search) || user.getLeadership().contains(search)){
-                        usersNames.add(user.getFirstName() + " " + user.getLastName());
-                        troops.add(user.getTroop());
+                troopsNames = new ArrayList<>();
+                troops = new HashMap<>();
+                DatabaseReference TroopsRef = DBRef.child("Troops");
+                TroopsRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange( DataSnapshot snapshot) {
+                        for(DataSnapshot Tds : snapshot.getChildren()){
+                            troops.put(Tds.getKey(), Tds.getValue(TroopObj.class));
+                        }
+                        usersNames.clear();
+                        troopsNames.clear();
+                        for(DataSnapshot ds : dataSnapshot.getChildren()) {
+                            UserObj user = ds.getValue(UserObj.class);
+                            if (user.getFirstName().contains(search) || user.getFirstName().contains(search)){
+                                usersNames.add(user.getFirstName() + " " + user.getLastName());
+                                troopsNames.add(troops.get(user.getTid()).get_name());
+                            }
+                        }
+                        AdapterTextSubText adapter = new AdapterTextSubText(Users.this, usersNames, troopsNames);
+                        _itemslist.setAdapter(adapter);
+
                     }
-                }
-                AdapterTextSubText adapter = new AdapterTextSubText(Users.this, usersNames, troops);
-                _itemslist.setAdapter(adapter);
+
+                    @Override
+                    public void onCancelled( DatabaseError error) {
+
+                    }
+                });
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {}
+            public void onCancelled(DatabaseError databaseError) {
+                //TODO set error
+            }
         };
         ref.addListenerForSingleValueEvent(valueEventListener);
     }

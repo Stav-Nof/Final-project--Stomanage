@@ -81,13 +81,14 @@ public class NewUser extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 troops.clear();
                 troops.add(getResources().getString(R.string.select_troop));
+                tids.clear();
+                tids.add("0");
 
                 DatabaseReference DBRef = FirebaseDatabase.getInstance().getReference();
                 DatabaseReference ref = DBRef.child("Troops");
                 ValueEventListener valueEventListener = new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        tids.clear();
                         for(DataSnapshot ds : dataSnapshot.getChildren()) {
                             TroopObj troop = ds.getValue(TroopObj.class);
                             if (troop.get_leadership().equals(leadership.get(position))){
@@ -96,9 +97,7 @@ public class NewUser extends AppCompatActivity {
                             }
                         }
                         _troop.setAdapter(troopAdapter);
-
                     }
-
                     @Override
                     public void onCancelled(DatabaseError databaseError) {}
                 };
@@ -172,12 +171,11 @@ public class NewUser extends AppCompatActivity {
                     return;
                 }
                 UserObj user = new UserObj(_firstName.getText().toString(),
-                                            _lastName.getText().toString(),
-                                            _email.getText().toString(),
-                                            _troop.getSelectedItem().toString(),
-                                            _leadership.getSelectedItem().toString(),
-                                            _role.getSelectedItem().toString(),
-                                            null);
+                        _lastName.getText().toString(),
+                        _email.getText().toString(),
+                        tids.get(_troop.getSelectedItemPosition()),
+                        _role.getSelectedItem().toString());
+
                 FirebaseAuth Auth = FirebaseAuth.getInstance();;
                 Auth.createUserWithEmailAndPassword(user.getEmail(), _password.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override

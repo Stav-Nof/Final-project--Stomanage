@@ -18,10 +18,14 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.SandY.stomanage.Adapters.AdapterTextSubText;
+import com.SandY.stomanage.Adapters.AdapterTextSubTextImage;
 import com.SandY.stomanage.R;
+import com.SandY.stomanage.dataObject.RegimentObj;
 import com.SandY.stomanage.dataObject.TroopObj;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -39,13 +43,12 @@ public class Regiment extends AppCompatActivity {
     ImageButton _clear, _share, _new;
     ListView _itemslist;
 
-
     String tid;
     String troopName;
-    TroopObj troop;
 
-    List<String> items;
     List<String> keys;
+    List<String> names;
+    List<String> ages;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,10 +57,11 @@ public class Regiment extends AppCompatActivity {
 
         Intent intent = getIntent();
         troopName = intent.getStringExtra("troopName");
+        tid = intent.getStringExtra("tid");
 
         attachFromXml();
         modifyActivity();
-        getTroopFromDB();
+        printItemList(_search.getText().toString());
         setClicks();
         searchAction();
     }
@@ -77,47 +81,33 @@ public class Regiment extends AppCompatActivity {
         _clear.setVisibility(View.INVISIBLE);
     }
 
-    private void getTroopFromDB(){
+    private void printItemList(String search){
         DatabaseReference DBRef = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference ref = DBRef.child("Troops");
-        ValueEventListener valueEventListener = new ValueEventListener() {
+        DatabaseReference ref = DBRef.child("Regiment").child(tid);
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot ds : dataSnapshot.getChildren()) {
-                    TroopObj troopTemp = ds.getValue(TroopObj.class);
-                    String TidTemp = ds.getKey();
-                    if (troopTemp.get_name().equals(troopName)){
-                        tid = TidTemp;
-                        troop = troopTemp;
-                        printItemList(_search.getText().toString());
+            public void onDataChange(DataSnapshot snapshot) {
+                keys = new ArrayList<>();
+                names = new ArrayList<>();
+                ages = new ArrayList<>();
+                for(DataSnapshot ds : snapshot.getChildren()) {
+                    RegimentObj regiment = ds.getValue(RegimentObj.class);
+                    String key = ds.getKey();
+                    if (regiment.get_name().contains(search) || regiment.get_ageGroup().contains(search)){
+                        keys.add(key);
+                        names.add(regiment.get_name());
+                        ages.add(regiment.get_ageGroup());
                     }
                 }
+                AdapterTextSubText adapter = new AdapterTextSubText(Regiment.this, names, ages);
+                _itemslist.setAdapter(adapter);
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {}
-        };
-        ref.addListenerForSingleValueEvent(valueEventListener);
-    }
+            public void onCancelled(DatabaseError error) {
 
-    private void printItemList(String search){
-        if (troop == null){
-            Toast.makeText(Regiment.this, getResources().getString(R.string.troopobj_not_found), Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (troop.get_regiments() == null){
-            Toast.makeText(Regiment.this, getResources().getString(R.string.no_regiment_in_troop), Toast.LENGTH_SHORT).show();
-            return;
-        }
-        items = new ArrayList<>();
-        keys = new ArrayList<>();
-        for(String name : troop.get_regiments().values()){
-            if (name.contains(search)) {
-                items.add(name);
             }
-        }
-        ArrayAdapter<String> adapter = new ArrayAdapter(Regiment.this, R.layout.layout_item_list, items);
-        _itemslist.setAdapter(adapter);
+        });
     }
 
     private void setClicks() {
@@ -139,13 +129,12 @@ public class Regiment extends AppCompatActivity {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 new AlertDialog.Builder(Regiment.this)
-                        .setTitle(getResources().getString(R.string.delete) + " " + items.get(position) )
+                        .setTitle(getResources().getString(R.string.delete) + " " + names.get(position) )
                         .setMessage(getResources().getString(R.string.delete_regiment_message))
                         .setPositiveButton(getResources().getString(R.string.delete), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                troop.get_regiments().values().remove(items.get(position));
-                                troop.updateToDB(tid);
+                                RegimentObj.deletFromDB(tid, keys.get(position));
                                 dialog.dismiss();
                                 printItemList(_search.getText().toString());
                             }
@@ -210,21 +199,21 @@ public class Regiment extends AppCompatActivity {
                     name.requestFocus();
                     return;
                 }
-                troop.regimentsInitialization();
+                _search.setText("");
                 String ageGroupS = ageGroup.getText().toString();
                 String nameS = name.getText().toString();
-                if (troop.get_regiments().keySet() != null && troop.get_regiments().keySet().contains(ageGroupS)){
+                if (ages.contains(ageGroupS)){
                     ageGroup.setError(getResources().getString(R.string.age_group_already_exists));
                     ageGroup.requestFocus();
                     return;
                 }
-                if (troop.get_regiments().values().contains(nameS)){
+                if (names.contains(nameS)){
                     name.setError(getResources().getString(R.string.name_already_exists));
                     name.requestFocus();
                     return;
                 }
-                troop.get_regiments().put(ageGroupS, nameS);
-                troop.updateToDB(tid);
+                RegimentObj Regiment = new RegimentObj(nameS, ageGroupS);
+                Regiment.WriteNewToDB(tid);
                 dialog.dismiss();
                 printItemList(_search.getText().toString());
             }
