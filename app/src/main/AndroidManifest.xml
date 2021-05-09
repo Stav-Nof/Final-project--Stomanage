@@ -14,7 +14,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Stomanage">
-        <activity android:name=".HeadWarehouseTeam.storekeepers"/>
+        <activity android:name=".HeadWarehouseTeam.Storekeepers"/>
         <activity android:name=".HeadWarehouseTeam.HeadWarehouseTeamMainMenu"/>
         <activity android:name=".Administrator.Warehouses"/>
         <activity android:name=".Administrator.TroopSelectToWarehouses"/>

@@ -8,11 +8,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.SandY.stomanage.Administrator.AdministratorMainMenu;
 import com.SandY.stomanage.HeadWarehouseTeam.HeadWarehouseTeamMainMenu;
-import com.SandY.stomanage.HeadWarehouseTeam.storekeepers;
 import com.SandY.stomanage.dataObject.UserObj;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
