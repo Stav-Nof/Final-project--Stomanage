@@ -20,17 +20,16 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import com.SandY.stomanage.Adapters.AdapterTextSubTextImage;
 import com.SandY.stomanage.R;
-import com.SandY.stomanage.dataObject.TroopObj;
+import com.SandY.stomanage.dataObject.ClassObj;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-public class Troops extends AppCompatActivity {
+public class AClass extends AppCompatActivity {
 
     private static final int WRITE_EXTERNAL_STORAGE_CODE = 399;
 
@@ -65,16 +64,16 @@ public class Troops extends AppCompatActivity {
     }
 
     private void downloadPermissions(){
-        if (ContextCompat.checkSelfPermission(Troops.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){return;}
+        if (ContextCompat.checkSelfPermission(AClass.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){return;}
         else{
-            if (ActivityCompat.shouldShowRequestPermissionRationale(Troops.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)){
-                new AlertDialog.Builder(Troops.this)
+            if (ActivityCompat.shouldShowRequestPermissionRationale(AClass.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)){
+                new AlertDialog.Builder(AClass.this)
                         .setTitle(getResources().getString(R.string.perm_needed))
                         .setMessage(getResources().getString(R.string.storage_perm_message_write))
                         .setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                ActivityCompat.requestPermissions(Troops.this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_EXTERNAL_STORAGE_CODE);
+                                ActivityCompat.requestPermissions(AClass.this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_EXTERNAL_STORAGE_CODE);
                             }
                         })
                         .setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
@@ -86,7 +85,7 @@ public class Troops extends AppCompatActivity {
                         .create().show();
             }
             else{
-                ActivityCompat.requestPermissions(Troops.this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_EXTERNAL_STORAGE_CODE);
+                ActivityCompat.requestPermissions(AClass.this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_EXTERNAL_STORAGE_CODE);
             }
         }
     }
@@ -100,8 +99,8 @@ public class Troops extends AppCompatActivity {
     }
 
     private void modifyActivity(){
-        _header.setText(getResources().getString(R.string.troops));
-        _search.setHint(getResources().getString(R.string.troop_name));
+        _header.setText(getResources().getString(R.string.classes));
+        _search.setHint(getResources().getString(R.string.class_name));
         _clear.setVisibility(View.INVISIBLE);
     }
 
@@ -116,7 +115,7 @@ public class Troops extends AppCompatActivity {
         _new.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Troops.this, NewTroop.class);
+                Intent intent = new Intent(AClass.this, NewClass.class);
                 startActivity(intent);
             }
         });
@@ -124,10 +123,10 @@ public class Troops extends AppCompatActivity {
         _itemslist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String troopClicked = items.get(position);
-                Intent intent = new Intent(Troops.this, Regiment.class);
-                intent.putExtra("troopName", troopClicked);
-                intent.putExtra("tid", tids.get(position));
+                String classClicked = items.get(position);
+                Intent intent = new Intent(AClass.this, Regiment.class);
+                intent.putExtra("className", classClicked);
+                intent.putExtra("cid", tids.get(position));
                 startActivity(intent);
             }
         });
@@ -135,28 +134,28 @@ public class Troops extends AppCompatActivity {
         _itemslist.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                new AlertDialog.Builder(Troops.this)
+                new AlertDialog.Builder(AClass.this)
                         .setTitle(getResources().getString(R.string.delete) + " " + items.get(position) )
-                        .setMessage(getResources().getString(R.string.delete_troop_message))
+                        .setMessage(getResources().getString(R.string.delete_class_message))
                         .setPositiveButton(getResources().getString(R.string.delete), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 DatabaseReference DBRef = FirebaseDatabase.getInstance().getReference();
-                                DatabaseReference ref = DBRef.child("Troops");
+                                DatabaseReference ref = DBRef.child("Classes");
                                 ValueEventListener valueEventListener = new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
                                         String tid = null;
                                         for(DataSnapshot ds : dataSnapshot.getChildren()) {
-                                            TroopObj troopTemp = ds.getValue(TroopObj.class);
+                                            ClassObj classTemp = ds.getValue(ClassObj.class);
                                             String TidTemp = ds.getKey();
-                                            if (troopTemp.get_name().equals(items.get(position))){
+                                            if (classTemp.get_name().equals(items.get(position))){
                                                 tid = TidTemp;
                                                 break;
                                             }
                                         }
                                         if (tid != null){
-                                            TroopObj.deletFromDB(tid);
+                                            ClassObj.deletFromDB(tid);
                                             printItemList(_search.getText().toString());
                                         }
                                     }
@@ -184,7 +183,7 @@ public class Troops extends AppCompatActivity {
 
     private void printItemList(String search){
         DatabaseReference DBRef = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference ref = DBRef.child("Troops");
+        DatabaseReference ref = DBRef.child("Classes");
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -193,14 +192,14 @@ public class Troops extends AppCompatActivity {
                 subItems = new ArrayList<>();
                 for(DataSnapshot ds : dataSnapshot.getChildren()) {
                     String key = ds.getKey();
-                    TroopObj troop = ds.getValue(TroopObj.class);
-                    if (troop.get_name().contains(search)){
+                    ClassObj Class = ds.getValue(ClassObj.class);
+                    if (Class.get_name().contains(search)){
                         tids.add(key);
-                        items.add(troop.get_name());
-                        subItems.add(troop.get_leadership());
+                        items.add(Class.get_name());
+                        subItems.add(Class.get_leadership());
                     }
                 }
-                AdapterTextSubTextImage adapter = new AdapterTextSubTextImage(Troops.this, items, subItems, "Troops", ".png", getResources().getDrawable(R.drawable.image_not_available));
+                AdapterTextSubTextImage adapter = new AdapterTextSubTextImage(AClass.this, items, subItems, "Classes", ".png", getResources().getDrawable(R.drawable.image_not_available));
                 _itemslist.setAdapter(adapter);
             }
 

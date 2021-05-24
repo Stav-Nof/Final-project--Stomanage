@@ -20,16 +20,16 @@ public class RegimentObj implements Serializable {
 
     public RegimentObj() { }
 
-    public void WriteNewToDB(String tid){
+    public void WriteNewToDB(String cid){
         DatabaseReference DBRef = FirebaseDatabase.getInstance().getReference();
         String rid = DBRef.push().getKey();
-        DBRef = DBRef.child("Regiment").child(tid).child(rid);
+        DBRef = DBRef.child("Regiment").child(cid).child(rid);
         DBRef.setValue(this);
     }
 
-    public static void deletFromDB(String tid, String rid){
+    public static void deletFromDB(String cid, String rid){
         DatabaseReference DBRef = FirebaseDatabase.getInstance().getReference();
-        DBRef = DBRef.child("Regiment").child(tid).child(rid);
+        DBRef = DBRef.child("Regiment").child(cid).child(rid);
         DBRef.setValue(null);
     }
 

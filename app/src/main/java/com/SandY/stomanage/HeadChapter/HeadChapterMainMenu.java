@@ -1,4 +1,4 @@
-package com.SandY.stomanage.Administrator;
+package com.SandY.stomanage.HeadChapter;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +9,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import com.SandY.stomanage.Administrator.Equipment;
+import com.SandY.stomanage.Administrator.ClassSelectToWarehouses;
+import com.SandY.stomanage.Administrator.AClass;
+import com.SandY.stomanage.Administrator.Users;
+import com.SandY.stomanage.HeadWarehouseTeam.HCClass;
 import com.SandY.stomanage.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -17,15 +22,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class AdministratorMainMenu extends AppCompatActivity {
+public class HeadChapterMainMenu extends AppCompatActivity {
 
     TextView _name;
-    CardView _class, _users, _equipment, _warehouses;
+    CardView _troops, _users, _equipment, _warehouses;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_administrator_main_menu);
+        setContentView(R.layout.activity_headchapter_main_menu);
 
         attachFromXml();
         modifyActivity();
@@ -35,7 +40,7 @@ public class AdministratorMainMenu extends AppCompatActivity {
 
     private void attachFromXml() {
         _name = (TextView)findViewById(R.id.name);
-        _class = (CardView)findViewById(R.id.classCard);
+        _troops = (CardView)findViewById(R.id.troopCard);
         _users = (CardView)findViewById(R.id.userCard);
         _equipment = (CardView)findViewById(R.id.equipmentCard);
         _warehouses = (CardView)findViewById(R.id.warehousesCard);
@@ -46,7 +51,7 @@ public class AdministratorMainMenu extends AppCompatActivity {
         DBRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                _name.setText(getResources().getString(R.string.welcome) + " " + dataSnapshot.getValue(String.class));
+                _name.setText(getResources().getString(R.string.welcome) + " " + dataSnapshot.getValue(HCClass.class));
             }
 
             @Override
@@ -57,10 +62,10 @@ public class AdministratorMainMenu extends AppCompatActivity {
     }
 
     private void setOnClickListeners() {
-        _class.setOnClickListener(new View.OnClickListener() {
+        _troops.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(AdministratorMainMenu.this, AClass.class);
+                Intent intent = new Intent(HeadChapterMainMenu.this, AClass.class);
                 startActivity(intent);
             }
         });
@@ -68,7 +73,7 @@ public class AdministratorMainMenu extends AppCompatActivity {
         _users.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(AdministratorMainMenu.this, Users.class);
+                Intent intent = new Intent(HeadChapterMainMenu.this, Users.class);
                 startActivity(intent);
             }
         });
@@ -76,7 +81,7 @@ public class AdministratorMainMenu extends AppCompatActivity {
         _equipment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(AdministratorMainMenu.this, Equipment.class);
+                Intent intent = new Intent(HeadChapterMainMenu.this, Equipment.class);
                 startActivity(intent);
             }
         });
@@ -84,7 +89,7 @@ public class AdministratorMainMenu extends AppCompatActivity {
         _warehouses.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(AdministratorMainMenu.this, ClassSelectToWarehouses.class);
+                Intent intent = new Intent(HeadChapterMainMenu.this, ClassSelectToWarehouses.class);
                 startActivity(intent);
             }
         });

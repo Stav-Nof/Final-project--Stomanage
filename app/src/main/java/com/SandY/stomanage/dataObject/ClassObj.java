@@ -26,36 +26,34 @@ import java.io.InputStream;
 import java.io.Serializable;
 import java.util.HashMap;
 
-public class TroopObj implements Serializable {
+public class ClassObj implements Serializable {
 
     private String _name;
     private String _leadership;
-    private HashMap<String, Double> _warehouse;
 
-    public TroopObj(String _name, String _leadership) {
+    public ClassObj(String _name, String _leadership) {
         this._name = _name;
         this._leadership = _leadership;
-        _warehouse = new HashMap<>();
     }
 
-    public TroopObj() { }
+    public ClassObj() { }
 
     public void WriteNewToDB(){
         DatabaseReference DBRef = FirebaseDatabase.getInstance().getReference();
-        String tid = DBRef.push().getKey();
-        DBRef = DBRef.child("Troops").child(tid);
+        String cid = DBRef.push().getKey();
+        DBRef = DBRef.child("Classes").child(cid);
         DBRef.setValue(this);
     }
 
-    public void updateToDB(String tid){
+    public void updateToDB(String cid){
         DatabaseReference DBRef = FirebaseDatabase.getInstance().getReference();
-        DBRef = DBRef.child("Troops").child(tid);
+        DBRef = DBRef.child("Classes").child(cid);
         DBRef.setValue(this);
     }
 
-    public static void deletFromDB(String tid){
+    public static void deletFromDB(String cid){
         DatabaseReference DBRef = FirebaseDatabase.getInstance().getReference();
-        DBRef = DBRef.child("Troops").child(tid);
+        DBRef = DBRef.child("Classes").child(cid);
         DBRef.setValue(null);
     }
 
@@ -73,21 +71,6 @@ public class TroopObj implements Serializable {
 
     public void set_name(String _name) {
         this._name = _name;
-    }
-
-    public HashMap<String, Double> get_warehouse() {
-        return _warehouse;
-    }
-
-    public void set_warehouse(HashMap<String, Double> _warehouse) {
-        this._warehouse = _warehouse;
-    }
-
-    public void warehouseInitialization(){
-        if(_warehouse == null) {
-            _warehouse = new HashMap<>();
-        }
-        return;
     }
 
 }

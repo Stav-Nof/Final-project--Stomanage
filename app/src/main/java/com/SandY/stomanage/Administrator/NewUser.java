@@ -13,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import com.SandY.stomanage.GlobalConstants;
 import com.SandY.stomanage.R;
-import com.SandY.stomanage.dataObject.TroopObj;
+import com.SandY.stomanage.dataObject.ClassObj;
 import com.SandY.stomanage.dataObject.UserObj;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -72,7 +72,7 @@ public class NewUser extends AppCompatActivity {
 
         tids = new ArrayList();
         ArrayList<String> troops = new ArrayList();
-        troops.add(getResources().getString(R.string.select_troop));
+        troops.add(getResources().getString(R.string.select_class));
         ArrayAdapter<String> troopAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, troops);
         _troop.setAdapter(troopAdapter);
 
@@ -80,7 +80,7 @@ public class NewUser extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 troops.clear();
-                troops.add(getResources().getString(R.string.select_troop));
+                troops.add(getResources().getString(R.string.select_class));
                 tids.clear();
                 tids.add("0");
 
@@ -90,7 +90,7 @@ public class NewUser extends AppCompatActivity {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         for(DataSnapshot ds : dataSnapshot.getChildren()) {
-                            TroopObj troop = ds.getValue(TroopObj.class);
+                            ClassObj troop = ds.getValue(ClassObj.class);
                             if (troop.get_leadership().equals(leadership.get(position))){
                                 troops.add(troop.get_name());
                                 tids.add(ds.getKey());
@@ -158,7 +158,7 @@ public class NewUser extends AppCompatActivity {
                     return;
                 }
                 if (_troop.getSelectedItemPosition() == 0){
-                    Toast.makeText(NewUser.this, getResources().getString(R.string.select_troop_error), Toast.LENGTH_LONG).show();
+                    Toast.makeText(NewUser.this, getResources().getString(R.string.select_class_error), Toast.LENGTH_LONG).show();
                     return;
                 }
                 if (_role.getSelectedItemPosition() == 0){

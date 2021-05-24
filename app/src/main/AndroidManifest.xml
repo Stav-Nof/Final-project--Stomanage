@@ -17,14 +17,14 @@
         <activity android:name=".HeadWarehouseTeam.Storekeepers"/>
         <activity android:name=".HeadWarehouseTeam.HeadWarehouseTeamMainMenu"/>
         <activity android:name=".Administrator.Warehouses"/>
-        <activity android:name=".Administrator.TroopSelectToWarehouses"/>
+        <activity android:name=".Administrator.ClassSelectToWarehouses"/>
         <activity android:name=".Administrator.NewEquipment"/>
         <activity android:name=".Administrator.Equipment"/>
         <activity android:name=".Administrator.NewUser"/>
         <activity android:name=".Administrator.Regiment"/>
         <activity android:name=".Administrator.Users"/>
-        <activity android:name=".Administrator.NewTroop"/>
-        <activity android:name=".Administrator.Troops"/>
+        <activity android:name=".Administrator.NewClass"/>
+        <activity android:name=".Administrator.AClass"/>
         <activity android:name=".Administrator.AdministratorMainMenu"/>
         <activity android:name=".Login">
             <intent-filter>

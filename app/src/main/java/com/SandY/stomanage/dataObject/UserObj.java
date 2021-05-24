@@ -8,23 +8,23 @@ public class UserObj implements Serializable {
     private String firstName;
     private String lastName;
     private String email;
-    private String tid;
+    private String cid;
     private String userPerm;
     private String Responsibility;
 
     public UserObj(){}
 
-    public UserObj(String fname, String lname, String email, String tid, String userPerm){
+    public UserObj(String fname, String lname, String email, String cid, String userPerm){
         this.firstName = fname;
         this.lastName = lname;
         this.email = email;
-        this.tid = tid;
+        this.cid = cid;
         this.userPerm = userPerm;
         this.Responsibility = null;
     }
 
     public void WriteToDB(String Uid){
-        DatabaseReference DBRef = DBRef = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference DBRef = FirebaseDatabase.getInstance().getReference();
         DBRef.child("Users").child(Uid).setValue(this);
     }
 
@@ -80,11 +80,11 @@ public class UserObj implements Serializable {
         Responsibility = responsibility;
     }
 
-    public String getTid() {
-        return tid;
+    public String getCid() {
+        return cid;
     }
 
-    public void setTid(String tid) {
-        this.tid = tid;
+    public void setcid(String cid) {
+        this.cid = cid;
     }
 }

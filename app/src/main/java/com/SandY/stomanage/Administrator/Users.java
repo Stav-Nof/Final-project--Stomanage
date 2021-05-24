@@ -8,12 +8,11 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.SandY.stomanage.Adapters.AdapterTextSubText;
 import com.SandY.stomanage.R;
-import com.SandY.stomanage.dataObject.TroopObj;
+import com.SandY.stomanage.dataObject.ClassObj;
 import com.SandY.stomanage.dataObject.UserObj;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -34,7 +33,7 @@ public class Users extends AppCompatActivity {
 
     ArrayList <String> usersNames;
     ArrayList <String> troopsNames;
-    HashMap<String, TroopObj> troops;
+    HashMap<String, ClassObj> troops;
 
 
     @Override
@@ -84,7 +83,7 @@ public class Users extends AppCompatActivity {
                     @Override
                     public void onDataChange( DataSnapshot snapshot) {
                         for(DataSnapshot Tds : snapshot.getChildren()){
-                            troops.put(Tds.getKey(), Tds.getValue(TroopObj.class));
+                            troops.put(Tds.getKey(), Tds.getValue(ClassObj.class));
                         }
                         usersNames.clear();
                         troopsNames.clear();
@@ -92,7 +91,7 @@ public class Users extends AppCompatActivity {
                             UserObj user = ds.getValue(UserObj.class);
                             if (user.getFirstName().contains(search) || user.getFirstName().contains(search)){
                                 usersNames.add(user.getFirstName() + " " + user.getLastName());
-                                troopsNames.add(troops.get(user.getTid()).get_name());
+                                troopsNames.add(troops.get(user.getCid()).get_name());
                             }
                         }
                         AdapterTextSubText adapter = new AdapterTextSubText(Users.this, usersNames, troopsNames);

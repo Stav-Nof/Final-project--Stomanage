@@ -13,6 +13,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -41,7 +42,7 @@ public class Storekeepers extends AppCompatActivity {
     EditText _search;
     ListView _itemslist;
 
-    ArrayList<String> Uids;
+    ArrayList<String> uids;
     ArrayList<UserObj> users;
 
     ArrayList<String> rids;
@@ -79,9 +80,9 @@ public class Storekeepers extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 UserObj HeadTeam = snapshot.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).getValue(UserObj.class);
-                Uids = new ArrayList<>();
+                uids = new ArrayList<>();
                 users = new ArrayList<>();
-                DatabaseReference regimentRef = DBRef.child("Regiment").child(HeadTeam.getTid());
+                DatabaseReference regimentRef = DBRef.child("Regiment").child(HeadTeam.getCid());
                 rids = new ArrayList<>();
                 regiments = new ArrayList<>();
                 //lists to print
@@ -97,8 +98,8 @@ public class Storekeepers extends AppCompatActivity {
                         for(DataSnapshot ds : snapshot.getChildren()) {
                             String uid = ds.getKey();
                             UserObj user = ds.getValue(UserObj.class);
-                            if (user.getTid().equals(HeadTeam.getTid()) && user.getUserPerm().equals(GlobalConstants.Perm.מחסנאי.toString())){
-                                Uids.add(uid);
+                            if (user.getCid().equals(HeadTeam.getCid()) && user.getUserPerm().equals(GlobalConstants.Perm.מחסנאי.toString())){
+                                uids.add(uid);
                                 users.add(user);
                                 names.add(user.getFirstName() + " " + user.getLastName());
                                 if (user.getResponsibility() == null) ageGroup.add(getResources().getString(R.string.not_set));
@@ -145,13 +146,35 @@ public class Storekeepers extends AppCompatActivity {
 
                 ArrayList<String> regiment = new ArrayList<>();
                 regiment.add(getResources().getString(R.string.select_regiment));
+                regiment.add(getResources().getString(R.string.not_set));
                 for (int i = 0; i < regiments.size() ; i++){
                     regiment.add(regiments.get(i).get_name() + " - " + regiments.get(i).get_ageGroup());
                 }
-                ArrayAdapter<String> regimentAdapter = new ArrayAdapter<>(Storekeepers.this, android.R.layout.simple_spinner_item, regiment)ya);
-                dialogSpinner.setAdapter(regimentAdapter);
 
+                ArrayAdapter<String> regimentAdapter = new ArrayAdapter<>(Storekeepers.this, android.R.layout.simple_spinner_item, regiment);
+                dialogSpinner.setAdapter(regimentAdapter);
                 dialogUpdate.setText(getResources().getString(R.string.update));
+
+                dialogUpdate.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (dialogSpinner.getSelectedItemPosition() == 0){
+                            Toast.makeText(Storekeepers.this, getResources().getString(R.string.select_regiment_error), Toast.LENGTH_LONG).show();
+                            return;
+                        }
+                        if (dialogSpinner.getSelectedItemPosition() == 1){
+                            users.get(position).setResponsibility(null);
+                            users.get(position).updateToDB(uids.get(position));
+                            dialog.dismiss();
+                            printItemList(_search.getText().toString());
+                            return;
+                        }
+                        users.get(position).setResponsibility(rids.get(dialogSpinner.getSelectedItemPosition() - 2));
+                        users.get(position).updateToDB(uids.get(position));
+                        dialog.dismiss();
+                        printItemList(_search.getText().toString());
+                    }
+                });
             }
         });
     }

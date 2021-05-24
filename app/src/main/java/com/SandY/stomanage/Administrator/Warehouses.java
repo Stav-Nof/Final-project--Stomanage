@@ -26,7 +26,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import com.SandY.stomanage.Adapters.AdapterTextSubTextImage;
 import com.SandY.stomanage.R;
-import com.SandY.stomanage.dataObject.TroopObj;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -107,7 +106,7 @@ public class Warehouses extends AppCompatActivity {
 
     private void modifyActivity(){
         _header.setText(troopName + " - " + getResources().getString(R.string.warehouses));
-        _search.setHint(getResources().getString(R.string.troop_name));
+        _search.setHint(getResources().getString(R.string.class_name));
         _clear.setVisibility(View.INVISIBLE);
     }
 

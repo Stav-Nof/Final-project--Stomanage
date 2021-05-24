@@ -27,7 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TroopSelectToWarehouses extends AppCompatActivity {
+public class ClassSelectToWarehouses extends AppCompatActivity {
 
     private static final int WRITE_EXTERNAL_STORAGE_CODE = 399;
 
@@ -61,16 +61,16 @@ public class TroopSelectToWarehouses extends AppCompatActivity {
     }
 
     private void downloadPermissions(){
-        if (ContextCompat.checkSelfPermission(TroopSelectToWarehouses.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){return;}
+        if (ContextCompat.checkSelfPermission(ClassSelectToWarehouses.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){return;}
         else{
-            if (ActivityCompat.shouldShowRequestPermissionRationale(TroopSelectToWarehouses.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)){
-                new AlertDialog.Builder(TroopSelectToWarehouses.this)
+            if (ActivityCompat.shouldShowRequestPermissionRationale(ClassSelectToWarehouses.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)){
+                new AlertDialog.Builder(ClassSelectToWarehouses.this)
                         .setTitle(getResources().getString(R.string.perm_needed))
                         .setMessage(getResources().getString(R.string.storage_perm_message_write))
                         .setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                ActivityCompat.requestPermissions(TroopSelectToWarehouses.this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_EXTERNAL_STORAGE_CODE);
+                                ActivityCompat.requestPermissions(ClassSelectToWarehouses.this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_EXTERNAL_STORAGE_CODE);
                             }
                         })
                         .setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
@@ -82,7 +82,7 @@ public class TroopSelectToWarehouses extends AppCompatActivity {
                         .create().show();
             }
             else{
-                ActivityCompat.requestPermissions(TroopSelectToWarehouses.this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_EXTERNAL_STORAGE_CODE);
+                ActivityCompat.requestPermissions(ClassSelectToWarehouses.this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_EXTERNAL_STORAGE_CODE);
             }
         }
     }
@@ -95,8 +95,8 @@ public class TroopSelectToWarehouses extends AppCompatActivity {
     }
 
     private void modifyActivity(){
-        _header.setText(getResources().getString(R.string.troops));
-        _search.setHint(getResources().getString(R.string.troop_name));
+        _header.setText(getResources().getString(R.string.classes));
+        _search.setHint(getResources().getString(R.string.class_name));
         _clear.setVisibility(View.INVISIBLE);
     }
 
@@ -111,7 +111,7 @@ public class TroopSelectToWarehouses extends AppCompatActivity {
         _itemslist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(TroopSelectToWarehouses.this, Warehouses.class);
+                Intent intent = new Intent(ClassSelectToWarehouses.this, Warehouses.class);
                 intent.putExtra("troopName", items.get(position));
                 intent.putExtra("tid", TID.get(position));
                 startActivity(intent);
@@ -138,7 +138,7 @@ public class TroopSelectToWarehouses extends AppCompatActivity {
                         TID.add(troopID);
                     }
                 }
-                AdapterTextSubTextImage adapter = new AdapterTextSubTextImage(TroopSelectToWarehouses.this, items, subItems, "Troops", ".png", getResources().getDrawable(R.drawable.image_not_available));
+                AdapterTextSubTextImage adapter = new AdapterTextSubTextImage(ClassSelectToWarehouses.this, items, subItems, "Troops", ".png", getResources().getDrawable(R.drawable.image_not_available));
                 _itemslist.setAdapter(adapter);
             }
 

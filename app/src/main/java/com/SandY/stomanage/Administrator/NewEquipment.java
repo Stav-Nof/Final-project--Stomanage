@@ -101,12 +101,12 @@ public class NewEquipment extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (_name.getText().toString().isEmpty()) {
-                    _name.setError(getResources().getString(R.string.troop_name));
+                    _name.setError(getResources().getString(R.string.class_name));
                     _name.requestFocus();
                     return;
                 }
                 if (_supplier.getText().toString().isEmpty()) {
-                    _supplier.setError(getResources().getString(R.string.troop_name));
+                    _supplier.setError(getResources().getString(R.string.class_name));
                     _supplier.requestFocus();
                     return;
                 }

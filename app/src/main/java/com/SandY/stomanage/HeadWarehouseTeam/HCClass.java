@@ -1,4 +1,4 @@
-package com.SandY.stomanage.Administrator;
+package com.SandY.stomanage.HeadWarehouseTeam;
 
 
 import android.Manifest;
@@ -9,33 +9,31 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-
 import com.SandY.stomanage.Adapters.AdapterTextSubTextImage;
+import com.SandY.stomanage.Administrator.Regiment;
 import com.SandY.stomanage.R;
-import com.SandY.stomanage.dataObject.EquipmentObj;
+import com.SandY.stomanage.dataObject.ClassObj;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
 import java.util.List;
 
-public class Equipment extends AppCompatActivity {
+public class HCClass extends AppCompatActivity {
 
     private static final int WRITE_EXTERNAL_STORAGE_CODE = 399;
 
-    ImageButton _new;
     EditText _search;
     ListView _itemslist;
     TextView  _header;
@@ -43,11 +41,12 @@ public class Equipment extends AppCompatActivity {
 
     List<String> items;
     List<String> subItems;
+    List<String> cids;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.template_activity_listview_add_search);
+        setContentView(R.layout.template_activity_listview_search);
 
         downloadPermissions();
         attachFromXml();
@@ -65,16 +64,16 @@ public class Equipment extends AppCompatActivity {
     }
 
     private void downloadPermissions(){
-        if (ContextCompat.checkSelfPermission(Equipment.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){return;}
+        if (ContextCompat.checkSelfPermission(HCClass.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){return;}
         else{
-            if (ActivityCompat.shouldShowRequestPermissionRationale(Equipment.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)){
-                new AlertDialog.Builder(Equipment.this)
+            if (ActivityCompat.shouldShowRequestPermissionRationale(HCClass.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)){
+                new AlertDialog.Builder(HCClass.this)
                         .setTitle(getResources().getString(R.string.perm_needed))
                         .setMessage(getResources().getString(R.string.storage_perm_message_write))
                         .setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                ActivityCompat.requestPermissions(Equipment.this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_EXTERNAL_STORAGE_CODE);
+                                ActivityCompat.requestPermissions(HCClass.this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_EXTERNAL_STORAGE_CODE);
                             }
                         })
                         .setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
@@ -86,13 +85,12 @@ public class Equipment extends AppCompatActivity {
                         .create().show();
             }
             else{
-                ActivityCompat.requestPermissions(Equipment.this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_EXTERNAL_STORAGE_CODE);
+                ActivityCompat.requestPermissions(HCClass.this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_EXTERNAL_STORAGE_CODE);
             }
         }
     }
 
     private void attachFromXml(){
-        _new = (ImageButton) findViewById(R.id.createNew);
         _search = (EditText) findViewById(R.id.searchText);
         _itemslist = (ListView) findViewById(R.id.itemslist);
         _header = (TextView) findViewById(R.id.header);
@@ -100,8 +98,8 @@ public class Equipment extends AppCompatActivity {
     }
 
     private void modifyActivity(){
-        _header.setText(getResources().getString(R.string.equipment));
-        _search.setHint(getResources().getString(R.string.enter_equipment_name));
+        _header.setText(getResources().getString(R.string.classes));
+        _search.setHint(getResources().getString(R.string.class_name));
         _clear.setVisibility(View.INVISIBLE);
     }
 
@@ -113,10 +111,13 @@ public class Equipment extends AppCompatActivity {
             }
         });
 
-        _new.setOnClickListener(new View.OnClickListener() {
+        _itemslist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Equipment.this, NewEquipment.class);
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String classClicked = items.get(position);
+                Intent intent = new Intent(HCClass.this, Regiment.class);
+                intent.putExtra("className", classClicked);
+                intent.putExtra("cid", cids.get(position));
                 startActivity(intent);
             }
         });
@@ -124,20 +125,23 @@ public class Equipment extends AppCompatActivity {
 
     private void printItemList(String search){
         DatabaseReference DBRef = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference ref = DBRef.child("Equipment");
+        DatabaseReference ref = DBRef.child("Classes");
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                cids = new ArrayList<>();
                 items = new ArrayList<>();
                 subItems = new ArrayList<>();
                 for(DataSnapshot ds : dataSnapshot.getChildren()) {
-                    EquipmentObj equipment = ds.getValue(EquipmentObj.class);
-                    if (equipment.get_name().contains(search) || equipment.get_supplier().contains(search)){
-                        items.add(equipment.get_name());
-                        subItems.add(equipment.get_supplier());
+                    String key = ds.getKey();
+                    ClassObj Class = ds.getValue(ClassObj.class);
+                    if (Class.get_name().contains(search)){
+                        cids.add(key);
+                        items.add(Class.get_name());
+                        subItems.add(Class.get_leadership());
                     }
                 }
-                AdapterTextSubTextImage adapter = new AdapterTextSubTextImage(Equipment.this, items, subItems, "Equipment", ".png", getResources().getDrawable(R.drawable.image_not_available));
+                AdapterTextSubTextImage adapter = new AdapterTextSubTextImage(HCClass.this, items, subItems, "Class", ".png", getResources().getDrawable(R.drawable.image_not_available));
                 _itemslist.setAdapter(adapter);
             }
 

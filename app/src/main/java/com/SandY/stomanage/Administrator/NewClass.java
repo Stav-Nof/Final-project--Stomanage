@@ -23,7 +23,7 @@ import androidx.core.content.ContextCompat;
 
 import com.SandY.stomanage.GlobalConstants;
 import com.SandY.stomanage.R;
-import com.SandY.stomanage.dataObject.TroopObj;
+import com.SandY.stomanage.dataObject.ClassObj;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
@@ -39,7 +39,7 @@ import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class NewTroop extends AppCompatActivity {
+public class NewClass extends AppCompatActivity {
 
     private static final int READ_EXTERNAL_STORAGE_CODE = 698;
     private static final int PICK_AN_IMAGE_FROM_STORAGE_CODE = 334;
@@ -54,7 +54,7 @@ public class NewTroop extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_troop);
+        setContentView(R.layout.activity_new_class);
 
         attachFromXml();
         modifyActivity();
@@ -85,20 +85,20 @@ public class NewTroop extends AppCompatActivity {
         _troopImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ContextCompat.checkSelfPermission(NewTroop.this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
+                if (ContextCompat.checkSelfPermission(NewClass.this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
                     Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
                     intent.setType("image/*");
                     startActivityForResult(intent, PICK_AN_IMAGE_FROM_STORAGE_CODE);
                 }
                 else{
-                    if (ActivityCompat.shouldShowRequestPermissionRationale(NewTroop.this, Manifest.permission.READ_EXTERNAL_STORAGE)){
-                        new AlertDialog.Builder(NewTroop.this)
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(NewClass.this, Manifest.permission.READ_EXTERNAL_STORAGE)){
+                        new AlertDialog.Builder(NewClass.this)
                                 .setTitle(getResources().getString(R.string.perm_needed))
                                 .setMessage(getResources().getString(R.string.storage_perm_message_read))
                                 .setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        ActivityCompat.requestPermissions(NewTroop.this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, READ_EXTERNAL_STORAGE_CODE);
+                                        ActivityCompat.requestPermissions(NewClass.this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, READ_EXTERNAL_STORAGE_CODE);
                                     }
                                 })
                                 .setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
@@ -110,7 +110,7 @@ public class NewTroop extends AppCompatActivity {
                                 .create().show();
                     }
                     else{
-                        ActivityCompat.requestPermissions(NewTroop.this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, READ_EXTERNAL_STORAGE_CODE);
+                        ActivityCompat.requestPermissions(NewClass.this, new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, READ_EXTERNAL_STORAGE_CODE);
                     }
                 }
             }
@@ -120,11 +120,11 @@ public class NewTroop extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (_leadership.getSelectedItemPosition() == 0){
-                    Toast.makeText(NewTroop.this, getResources().getString(R.string.select_leadership_error), Toast.LENGTH_LONG).show();
+                    Toast.makeText(NewClass.this, getResources().getString(R.string.select_leadership_error), Toast.LENGTH_LONG).show();
                     return;
                 }
                 if (_troopName.getText().toString().isEmpty()){
-                    _troopName.setError(getResources().getString(R.string.troop_name));
+                    _troopName.setError(getResources().getString(R.string.class_name));
                     _troopName.requestFocus();
                     return;
                 }
@@ -144,11 +144,11 @@ public class NewTroop extends AppCompatActivity {
                             }
                         }
 
-                        ProgressDialog progressDialog = new ProgressDialog(NewTroop.this);
+                        ProgressDialog progressDialog = new ProgressDialog(NewClass.this);
                         progressDialog.setTitle(getResources().getString(R.string.uploading));
                         progressDialog.show();
 
-                        TroopObj troop = new TroopObj(_troopName.getText().toString(), _leadership.getSelectedItem().toString());
+                        ClassObj troop = new ClassObj(_troopName.getText().toString(), _leadership.getSelectedItem().toString());
                         troop.WriteNewToDB();
 
                         if (uri != null){
@@ -158,13 +158,13 @@ public class NewTroop extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
                                     if (task.isSuccessful()) {
-                                        Toast.makeText(NewTroop.this, getResources().getString(R.string.uploading_success), Toast.LENGTH_LONG).show();
+                                        Toast.makeText(NewClass.this, getResources().getString(R.string.uploading_success), Toast.LENGTH_LONG).show();
                                         progressDialog.dismiss();
                                         finish();
                                     }
                                     else{
                                         String message = task.getException().getMessage();
-                                        Toast.makeText(NewTroop.this, "Error Occurred: " + message, Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(NewClass.this, "Error Occurred: " + message, Toast.LENGTH_SHORT).show();
                                         progressDialog.dismiss();
                                     }
                                 }
@@ -193,6 +193,6 @@ public class NewTroop extends AppCompatActivity {
             uri = data.getData();
             _troopImage.setImageURI(uri);
         }
-        else Toast.makeText(NewTroop.this, "Action canceled", Toast.LENGTH_SHORT).show();
+        else Toast.makeText(NewClass.this, "Action canceled", Toast.LENGTH_SHORT).show();
     }
 }
