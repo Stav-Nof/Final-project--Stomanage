@@ -1,4 +1,4 @@
-package com.SandY.stomanage.Administrator;
+package com.SandY.stomanage.HeadChapter;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -19,6 +19,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -26,6 +27,7 @@ import com.SandY.stomanage.Adapters.AdapterTextSubText;
 import com.SandY.stomanage.GlobalConstants;
 import com.SandY.stomanage.R;
 import com.SandY.stomanage.dataObject.ClassObj;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -35,15 +37,14 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Regiment extends AppCompatActivity {
+public class Classes extends AppCompatActivity {
 
     TextView _header;
     EditText _search;
     ImageButton _clear, _share, _new;
     ListView _itemslist;
 
-    String cid;
-    String className;
+    String chid;
 
     List<String> keys;
     List<String> names;
@@ -55,8 +56,7 @@ public class Regiment extends AppCompatActivity {
         setContentView(R.layout.template_activity_listview_add_search);
 
         Intent intent = getIntent();
-        className = intent.getStringExtra("className");
-        cid = intent.getStringExtra("cid");
+        chid = intent.getStringExtra("chid");
 
         attachFromXml();
         modifyActivity();
@@ -75,14 +75,26 @@ public class Regiment extends AppCompatActivity {
     }
 
     private void modifyActivity(){
-        _header.setText(getResources().getString(R.string.Class) + " - " + className);
+        DatabaseReference DBRef = FirebaseDatabase.getInstance().getReference().child("Chapters").child(chid).child("_name");
+        DBRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String ClassName = snapshot.getValue(String.class);
+                _header.setText(getResources().getString(R.string.Class) + " - " + ClassName);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                //TODO set error
+            }
+        });
         _search.setHint(getResources().getString(R.string.class_name));
         _clear.setVisibility(View.INVISIBLE);
     }
 
     private void printItemList(String search){
         DatabaseReference DBRef = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference ref = DBRef.child("Regiment").child(cid);
+        DatabaseReference ref = DBRef.child("Classes").child(chid);
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
@@ -90,21 +102,21 @@ public class Regiment extends AppCompatActivity {
                 names = new ArrayList<>();
                 ages = new ArrayList<>();
                 for(DataSnapshot ds : snapshot.getChildren()) {
-                    ClassObj regiment = ds.getValue(ClassObj.class);
+                    ClassObj Class = ds.getValue(ClassObj.class);
                     String key = ds.getKey();
-                    if (regiment.get_name().contains(search) || regiment.get_ageGroup().contains(search)){
+                    if (Class.get_name().contains(search) || Class.get_ageGroup().contains(search)){
                         keys.add(key);
-                        names.add(regiment.get_name());
-                        ages.add(regiment.get_ageGroup());
+                        names.add(Class.get_name());
+                        ages.add(Class.get_ageGroup());
                     }
                 }
-                AdapterTextSubText adapter = new AdapterTextSubText(Regiment.this, names, ages);
+                AdapterTextSubText adapter = new AdapterTextSubText(Classes.this, names, ages);
                 _itemslist.setAdapter(adapter);
             }
 
             @Override
             public void onCancelled(DatabaseError error) {
-
+                //TODO ser error
             }
         });
     }
@@ -127,13 +139,13 @@ public class Regiment extends AppCompatActivity {
         _itemslist.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                new AlertDialog.Builder(Regiment.this)
+                new AlertDialog.Builder(Classes.this)
                         .setTitle(getResources().getString(R.string.delete) + " " + names.get(position) )
                         .setMessage(getResources().getString(R.string.delete_regiment_message))
                         .setPositiveButton(getResources().getString(R.string.delete), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                ClassObj.deletFromDB(cid, keys.get(position));
+                                ClassObj.deletFromDB(chid, keys.get(position));
                                 dialog.dismiss();
                                 printItemList(_search.getText().toString());
                             }
@@ -168,7 +180,7 @@ public class Regiment extends AppCompatActivity {
     }
 
     private void newRegiment() {
-        Dialog dialog = new Dialog(Regiment.this);
+        Dialog dialog = new Dialog(Classes.this);
         dialog.setContentView(R.layout.popup_text_spinner_button);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             dialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.dialog_background));
@@ -183,12 +195,12 @@ public class Regiment extends AppCompatActivity {
 
         Spinner ageGroup = dialog.findViewById(R.id.Spinner);
         GlobalConstants.ageGroup[] ageGroups = GlobalConstants.ageGroup.values();
-        ArrayList<String> ages = new ArrayList();
-        ages.add(getResources().getString(R.string.select_age_error));
+        ArrayList<String> dialogAges = new ArrayList();
+        dialogAges.add(getResources().getString(R.string.select_age_error));
         for (int i = 0; i < ageGroups.length; i++){
-            ages.add(ageGroups[i].toString());
+            dialogAges.add(ageGroups[i].toString());
         }
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, ages);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, dialogAges);
         ageGroup.setAdapter(adapter);
 
         Button add = dialog.findViewById(R.id.Button);
@@ -203,14 +215,14 @@ public class Regiment extends AppCompatActivity {
                     return;
                 }
                 if (ageGroup.getSelectedItemPosition() == 0){
-                    Toast.makeText(Regiment.this, getResources().getString(R.string.select_age_error), Toast.LENGTH_LONG).show();
+                    Toast.makeText(Classes.this, getResources().getString(R.string.select_age_error), Toast.LENGTH_LONG).show();
                     return;
                 }
                 _search.setText("");
                 String ageGroupS = ageGroup.getSelectedItem().toString();
                 String nameS = name.getText().toString();
                 if (ages.contains(ageGroupS)){
-//                    ageGroup.setError(getResources().getString(R.string.age_group_already_exists)); //TODO
+                    Toast.makeText(Classes.this, getResources().getString(R.string.age_group_already_exists), Toast.LENGTH_LONG).show();
                     ageGroup.requestFocus();
                     return;
                 }
@@ -220,7 +232,7 @@ public class Regiment extends AppCompatActivity {
                     return;
                 }
                 ClassObj Regiment = new ClassObj(nameS, ageGroupS);
-                Regiment.WriteNewToDB(cid);
+                Regiment.WriteNewToDB(chid);
                 dialog.dismiss();
                 printItemList(_search.getText().toString());
             }

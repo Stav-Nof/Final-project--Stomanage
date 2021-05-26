@@ -21,7 +21,7 @@ import androidx.core.content.ContextCompat;
 
 import com.SandY.stomanage.Adapters.AdapterTextSubTextImage;
 import com.SandY.stomanage.R;
-import com.SandY.stomanage.dataObject.EquipmentObj;
+import com.SandY.stomanage.dataObject.ItemObj;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -100,8 +100,8 @@ public class Equipment extends AppCompatActivity {
     }
 
     private void modifyActivity(){
-        _header.setText(getResources().getString(R.string.equipment));
-        _search.setHint(getResources().getString(R.string.enter_equipment_name));
+        _header.setText(getResources().getString(R.string.items));
+        _search.setHint(getResources().getString(R.string.enter_item_name));
         _clear.setVisibility(View.INVISIBLE);
     }
 
@@ -131,7 +131,7 @@ public class Equipment extends AppCompatActivity {
                 items = new ArrayList<>();
                 subItems = new ArrayList<>();
                 for(DataSnapshot ds : dataSnapshot.getChildren()) {
-                    EquipmentObj equipment = ds.getValue(EquipmentObj.class);
+                    ItemObj equipment = ds.getValue(ItemObj.class);
                     if (equipment.get_name().contains(search) || equipment.get_supplier().contains(search)){
                         items.add(equipment.get_name());
                         subItems.add(equipment.get_supplier());

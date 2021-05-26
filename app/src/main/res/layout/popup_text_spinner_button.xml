@@ -2,18 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:gravity="center">
 
     <EditText
         android:id="@+id/EditText"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:background="@drawable/text_field"
         android:inputType="textPersonName"
-        android:textSize="30sp"
+        android:textSize="20sp"
         android:layout_marginTop="15dp"
         android:layout_marginRight="15dp"
         android:layout_marginLeft="15dp"
@@ -21,7 +20,7 @@
 
     <Spinner
         android:id="@+id/Spinner"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:background="@drawable/text_field"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"

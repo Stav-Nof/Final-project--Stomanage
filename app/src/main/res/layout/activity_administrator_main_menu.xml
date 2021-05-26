@@ -128,13 +128,13 @@
                             <ImageView
                                 android:layout_width="150dp"
                                 android:layout_height="140dp"
-                                android:src="@drawable/classes"/>
+                                android:src="@drawable/chapters"/>
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="10dp"
-                                android:text="@string/classes"
+                                android:text="@string/chapters"
                                 android:textColor="@color/black"
                                 android:textSize="20sp"/>
 
@@ -180,7 +180,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="10dp"
-                                android:text="@string/equipment"
+                                android:text="@string/items"
                                 android:textColor="@color/black"
                                 android:textSize="20sp"/>
 

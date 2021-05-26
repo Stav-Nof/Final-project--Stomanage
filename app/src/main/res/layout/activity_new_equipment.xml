@@ -17,7 +17,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="@string/new_equipment"
+        android:text="@string/new_item"
         android:textSize="25sp"
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
@@ -25,7 +25,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/equipmentImage"
+        android:id="@+id/image"
         android:layout_width="140dp"
         android:layout_height="140dp"
         android:src="@drawable/image_not_available"
@@ -43,10 +43,10 @@
         android:layout_marginTop="20dp"
         android:inputType="textPersonName"
         android:gravity="center"
-        android:hint="@string/equipment_name"
+        android:hint="@string/item_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/equipmentImage"
+        app:layout_constraintTop_toBottomOf="@+id/image"
         android:background="@drawable/text_field"/>
 
     <LinearLayout

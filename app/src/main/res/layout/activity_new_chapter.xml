@@ -17,7 +17,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="@string/new_class"
+        android:text="@string/new_chapters"
         android:textSize="25sp"
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
@@ -25,7 +25,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/troopImage"
+        android:id="@+id/chapterImage"
         android:layout_width="140dp"
         android:layout_height="140dp"
         android:src="?attr/no_image"
@@ -38,7 +38,7 @@
         android:id="@+id/leadership"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/troopImage"
+        app:layout_constraintTop_toBottomOf="@+id/chapterImage"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginLeft="50dp"
@@ -49,7 +49,7 @@
         android:background="@drawable/text_field"/>
 
     <EditText
-        android:id="@+id/troopName"
+        android:id="@+id/chapterName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="50dp"
@@ -57,7 +57,7 @@
         android:layout_marginTop="20dp"
         android:inputType="textPersonName"
         android:gravity="center"
-        android:hint="@string/class_name"
+        android:hint="@string/chapters_name"
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

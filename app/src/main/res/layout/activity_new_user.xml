@@ -100,7 +100,7 @@
         android:background="@drawable/text_field"/>
 
     <Spinner
-        android:id="@+id/leadership"
+        android:id="@+id/role"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/confirmPassword"
@@ -114,7 +114,21 @@
         android:background="@drawable/text_field"/>
 
     <Spinner
-        android:id="@+id/troop"
+        android:id="@+id/leadership"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/role"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginTop="20dp"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:background="@drawable/text_field"/>
+
+    <Spinner
+        android:id="@+id/chapter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/leadership"
@@ -126,22 +140,6 @@
         android:textAlignment="center"
         android:gravity="center"
         android:background="@drawable/text_field"/>
-
-    <Spinner
-        android:id="@+id/role"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/troop"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"
-        android:layout_marginTop="20dp"
-        android:textAlignment="center"
-        android:gravity="center"
-        android:background="@drawable/text_field"/>
-
-
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"

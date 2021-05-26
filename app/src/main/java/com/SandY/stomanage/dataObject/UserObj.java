@@ -64,6 +64,14 @@ public class UserObj implements Serializable {
         this.email = email;
     }
 
+    public String getCid() {
+        return cid;
+    }
+
+    public void setCid(String cid) {
+        this.cid = cid;
+    }
+
     public String getUserPerm() {
         return userPerm;
     }
@@ -78,13 +86,5 @@ public class UserObj implements Serializable {
 
     public void setResponsibility(String responsibility) {
         Responsibility = responsibility;
-    }
-
-    public String getCid() {
-        return cid;
-    }
-
-    public void setcid(String cid) {
-        this.cid = cid;
     }
 }

@@ -1,4 +1,4 @@
-package com.SandY.stomanage.Administrator;
+package com.SandY.stomanage.HeadChapter;
 
 import android.Manifest;
 import android.app.Dialog;
@@ -24,31 +24,35 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
 import com.SandY.stomanage.Adapters.AdapterTextSubTextImage;
 import com.SandY.stomanage.R;
+import com.SandY.stomanage.dataObject.chapterObj;
+import com.SandY.stomanage.dataObject.ItemObj;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class Warehouses extends AppCompatActivity {
+public class WarehouseItemList extends AppCompatActivity {
 
     private static final int WRITE_EXTERNAL_STORAGE_CODE = 819;
 
-    String tid;
-    String chapterName;
+    String cid;
+    chapterObj Class;
 
     EditText _search;
     ListView _itemslist;
     TextView _header;
-    ImageButton _clear;
+    ImageButton _clear, _add;
 
-    List<String> Ename;
-    List<String> eid;
-    List<String> EnameToPrint;
+    List<ItemObj> items;
+    List<String> iid;
+    List<String> itemName;
     List<String> quantity;
 
 
@@ -56,11 +60,10 @@ public class Warehouses extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.template_activity_listview_search);
+        setContentView(R.layout.template_activity_listview_add_search);
 
         Intent intent = getIntent();
-        chapterName = intent.getStringExtra("chapterName");
-        tid = intent.getStringExtra("tid");
+        cid = intent.getStringExtra("cid");
 
         downloadPermissions();
         attachFromXml();
@@ -70,17 +73,23 @@ public class Warehouses extends AppCompatActivity {
         searchAction();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        printItemList(_search.getText().toString());
+    }
+
     private void downloadPermissions(){
-        if (ContextCompat.checkSelfPermission(Warehouses.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){return;}
+        if (ContextCompat.checkSelfPermission(WarehouseItemList.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){return;}
         else{
-            if (ActivityCompat.shouldShowRequestPermissionRationale(Warehouses.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)){
-                new AlertDialog.Builder(Warehouses.this)
+            if (ActivityCompat.shouldShowRequestPermissionRationale(WarehouseItemList.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)){
+                new AlertDialog.Builder(WarehouseItemList.this)
                         .setTitle(getResources().getString(R.string.perm_needed))
                         .setMessage(getResources().getString(R.string.storage_perm_message_write))
                         .setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                ActivityCompat.requestPermissions(Warehouses.this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_EXTERNAL_STORAGE_CODE);
+                                ActivityCompat.requestPermissions(WarehouseItemList.this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_EXTERNAL_STORAGE_CODE);
                             }
                         })
                         .setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
@@ -92,7 +101,7 @@ public class Warehouses extends AppCompatActivity {
                         .create().show();
             }
             else{
-                ActivityCompat.requestPermissions(Warehouses.this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_EXTERNAL_STORAGE_CODE);
+                ActivityCompat.requestPermissions(WarehouseItemList.this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_EXTERNAL_STORAGE_CODE);
             }
         }
     }
@@ -102,59 +111,54 @@ public class Warehouses extends AppCompatActivity {
         _itemslist = (ListView) findViewById(R.id.itemslist);
         _header = (TextView) findViewById(R.id.header);
         _clear = (ImageButton) findViewById(R.id.clear);
+        _add = findViewById(R.id.createNew);
     }
 
     private void modifyActivity(){
-        _header.setText(chapterName + " - " + getResources().getString(R.string.warehouses));
+        DatabaseReference DBRef = FirebaseDatabase.getInstance().getReference().child("Classes").child(cid);
+        DBRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                Class = snapshot.getValue(chapterObj.class);
+                _header.setText(Class.get_name() + " - " + getResources().getString(R.string.warehouses));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                //TODO set error
+            }
+        });
         _search.setHint(getResources().getString(R.string.chapters_name));
         _clear.setVisibility(View.INVISIBLE);
     }
 
     private void printItemList(String search){
         DatabaseReference DBRef = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference ref = DBRef.child("Equipment");
+        DatabaseReference ref = DBRef.child("Warehouses").child(cid);
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Ename = new ArrayList<>();
-                eid = new ArrayList<>();
-                for(DataSnapshot ds : snapshot.getChildren()) {
-                    eid.add(ds.getKey());
-                    Ename.add(ds.child("_name").getValue(String.class));
+                items = new ArrayList<>();
+                iid = new ArrayList<>();
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    iid.add(ds.getKey());
+                    items.add(ds.getValue(ItemObj.class));
                 }
                 quantity = new ArrayList<>();
-                EnameToPrint = new ArrayList<>();
-                DatabaseReference warehousesRef = DBRef.child("Warehouses").child(tid);
-                warehousesRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot warehousesSnapshot) {
-                        for ( int i = 0; eid.size() > i ; i++ ){
-                            if(Ename.get(i).contains(search)){
-                                if (warehousesSnapshot.hasChild(eid.get(i))){
-                                    Double quantityinDB = warehousesSnapshot.child(eid.get(i)).getValue(Double.class);
-                                    quantity.add(Double.toString(quantityinDB));
-                                    EnameToPrint.add(Ename.get(i));
-                                }
-                                else {
-                                    quantity.add("0");
-                                    EnameToPrint.add(Ename.get(i));
-                                }
-                            }
-                        }
-                        AdapterTextSubTextImage adapter = new AdapterTextSubTextImage(Warehouses.this, EnameToPrint, quantity, "Equipment", ".png", getResources().getDrawable(R.drawable.image_not_available));
-                        _itemslist.setAdapter(adapter);
+                itemName = new ArrayList<>();
+                for (int i = 0; items.size() > i; i++) {
+                    if (items.get(i).get_name().contains(search)) {
+                        itemName.add(items.get(i).get_name());
+                        quantity.add(Double.toString(items.get(i).get_quantity()));
                     }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
+                }
+                AdapterTextSubTextImage adapter = new AdapterTextSubTextImage(WarehouseItemList.this, itemName, quantity, "Equipment\\" + cid, ".png", getResources().getDrawable(R.drawable.image_not_available));
+                _itemslist.setAdapter(adapter);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                //TODO set error
             }
         });
     }
@@ -177,10 +181,19 @@ public class Warehouses extends AppCompatActivity {
     }
 
     private void setClicks(){
+        _add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(WarehouseItemList.this, NewItem.class);
+                intent.putExtra("cid", cid);
+                startActivity(intent);
+            }
+        });
+
         _itemslist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Dialog dialog = new Dialog(Warehouses.this);
+                Dialog dialog = new Dialog(WarehouseItemList.this);
                 dialog.setContentView(R.layout.popup_textview_textview_edittext_button);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     dialog.getWindow().setBackgroundDrawable(getDrawable(R.drawable.dialog_background));
@@ -196,7 +209,7 @@ public class Warehouses extends AppCompatActivity {
                 Button updateDialog = dialog.findViewById(R.id.Button);
 
                 headerDialog.setText(getResources().getString(R.string.update_quantity));
-                textDialog.setText(EnameToPrint.get(position));
+                textDialog.setText(itemName.get(position));
                 fieldDialog.setText(quantity.get(position));
                 updateDialog.setText(getResources().getString(R.string.update));
 
@@ -208,11 +221,11 @@ public class Warehouses extends AppCompatActivity {
                             fieldDialog.setText("0");
                         }
 
-                        DatabaseReference DBRef = FirebaseDatabase.getInstance().getReference();
-                        DatabaseReference ref = DBRef.child("Warehouses").child(tid).child(eid.get(Ename.indexOf(EnameToPrint.get(position))));
-                        ref.setValue(Double.parseDouble(fieldDialog.getText().toString()));
-                        dialog.dismiss();
-                        printItemList(_search.getText().toString());
+//                        DatabaseReference DBRef = FirebaseDatabase.getInstance().getReference();
+//                        DatabaseReference ref = DBRef.child("Warehouses").child(cid).child(eid.get(Ename.indexOf(EnameToPrint.get(position))));
+//                        ref.setValue(Double.parseDouble(fieldDialog.getText().toString()));
+//                        dialog.dismiss();
+//                        printItemList(_search.getText().toString());
 
                     }
                 });

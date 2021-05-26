@@ -1,4 +1,4 @@
-package com.SandY.stomanage.Administrator;
+package com.SandY.stomanage.HeadChapter;
 
 import android.Manifest;
 import android.app.ProgressDialog;
@@ -32,15 +32,17 @@ import com.google.firebase.storage.UploadTask;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class NewEquipment extends AppCompatActivity {
+public class NewItem extends AppCompatActivity {
 
     public static final int CAMERA_PERMISSION = 489;
     public static final int USING_CAMERA_CODE = 812;
 
-    CircleImageView _equipmentImage;
+    CircleImageView _image;
     EditText _name, _supplier;
     CheckBox _returnedable;
     ImageButton _add;
+
+    String cid;
 
     Uri uri = null;
 
@@ -49,37 +51,39 @@ public class NewEquipment extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_equipment);
 
+        Intent intent = getIntent();
+        cid = intent.getStringExtra("cid");
+
         attachFromXml();
         setClicks();
     }
 
     private void attachFromXml(){
-        _equipmentImage = findViewById(R.id.image);
+        _image = findViewById(R.id.image);
         _name = findViewById(R.id.name);
         _returnedable = findViewById(R.id.returnedable);
         _supplier = findViewById(R.id.supplier);
         _add = findViewById(R.id.createNew);
-
     }
 
 
     private void setClicks() {
-        _equipmentImage.setOnClickListener(new View.OnClickListener() {
+        _image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ContextCompat.checkSelfPermission(NewEquipment.this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED){
+                if (ContextCompat.checkSelfPermission(NewItem.this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED){
                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     startActivityForResult(intent, USING_CAMERA_CODE);
                 }
                 else{
-                    if (ActivityCompat.shouldShowRequestPermissionRationale(NewEquipment.this, Manifest.permission.CAMERA)){
-                        new AlertDialog.Builder(NewEquipment.this)
+                    if (ActivityCompat.shouldShowRequestPermissionRationale(NewItem.this, Manifest.permission.CAMERA)){
+                        new AlertDialog.Builder(NewItem.this)
                                 .setTitle(getResources().getString(R.string.perm_needed))
                                 .setMessage(getResources().getString(R.string.storage_perm_message_read))
                                 .setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        ActivityCompat.requestPermissions(NewEquipment.this, new String[] {Manifest.permission.CAMERA}, CAMERA_PERMISSION);
+                                        ActivityCompat.requestPermissions(NewItem.this, new String[] {Manifest.permission.CAMERA}, CAMERA_PERMISSION);
                                     }
                                 })
                                 .setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
@@ -91,7 +95,7 @@ public class NewEquipment extends AppCompatActivity {
                                 .create().show();
                     }
                     else{
-                        ActivityCompat.requestPermissions(NewEquipment.this, new String[] {Manifest.permission.CAMERA}, CAMERA_PERMISSION);
+                        ActivityCompat.requestPermissions(NewItem.this, new String[] {Manifest.permission.CAMERA}, CAMERA_PERMISSION);
                     }
                 }
             }
@@ -111,26 +115,26 @@ public class NewEquipment extends AppCompatActivity {
                     return;
                 }
 
-                ProgressDialog progressDialog = new ProgressDialog(NewEquipment.this);
+                ProgressDialog progressDialog = new ProgressDialog(NewItem.this);
                 progressDialog.setTitle(getResources().getString(R.string.uploading));
                 progressDialog.show();
 
                 ItemObj equipment = new ItemObj(_name.getText().toString(), _returnedable.isChecked(), _supplier.getText().toString());
-//                equipment.WriteToDB(cid);
+                equipment.WriteToDB(cid);
 
                 if (uri != null) {
                     StorageReference storageRef = FirebaseStorage.getInstance().getReference();
-                    storageRef = storageRef.child("Equipment").child(equipment.get_name() + ".png");
+                    storageRef = storageRef.child("Equipment\\" + cid).child(equipment.get_name() + ".png");
                     storageRef.putFile(uri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
                             if (task.isSuccessful()) {
-                                Toast.makeText(NewEquipment.this, getResources().getString(R.string.uploading_success), Toast.LENGTH_LONG).show();
+                                Toast.makeText(NewItem.this, getResources().getString(R.string.uploading_success), Toast.LENGTH_LONG).show();
                                 progressDialog.dismiss();
                                 finish();
                             } else {
                                 String message = task.getException().getMessage();
-                                Toast.makeText(NewEquipment.this, "Error Occurred: " + message, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(NewItem.this, "Error Occurred: " + message, Toast.LENGTH_SHORT).show();
                                 progressDialog.dismiss();
                             }
                         }
@@ -152,10 +156,10 @@ public class NewEquipment extends AppCompatActivity {
 
         if (requestCode == USING_CAMERA_CODE  && resultCode == RESULT_OK){
             Bitmap bitmap = (Bitmap) data.getExtras().get("data");
-            String path = MediaStore.Images.Media.insertImage(NewEquipment.this.getContentResolver(), bitmap, "Title", null);
+            String path = MediaStore.Images.Media.insertImage(NewItem.this.getContentResolver(), bitmap, "Title", null);
             uri = Uri.parse(path);
-            _equipmentImage.setImageURI(uri);
+            _image.setImageURI(uri);
         }
-        else Toast.makeText(NewEquipment.this, "Action canceled", Toast.LENGTH_SHORT).show();
+        else Toast.makeText(NewItem.this, "Action canceled", Toast.LENGTH_SHORT).show();
     }
 }

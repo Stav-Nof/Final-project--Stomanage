@@ -20,7 +20,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import com.SandY.stomanage.Adapters.AdapterTextSubTextImage;
 import com.SandY.stomanage.R;
-import com.SandY.stomanage.dataObject.ClassObj;
+import com.SandY.stomanage.dataObject.chapterObj;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -99,8 +99,8 @@ public class AClass extends AppCompatActivity {
     }
 
     private void modifyActivity(){
-        _header.setText(getResources().getString(R.string.classes));
-        _search.setHint(getResources().getString(R.string.class_name));
+        _header.setText(getResources().getString(R.string.chapters));
+        _search.setHint(getResources().getString(R.string.chapters_name));
         _clear.setVisibility(View.INVISIBLE);
     }
 
@@ -123,9 +123,9 @@ public class AClass extends AppCompatActivity {
         _itemslist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String classClicked = items.get(position);
+                String chapterClicked = items.get(position);
                 Intent intent = new Intent(AClass.this, Regiment.class);
-                intent.putExtra("className", classClicked);
+                intent.putExtra("chapterName", chapterClicked);
                 intent.putExtra("cid", tids.get(position));
                 startActivity(intent);
             }
@@ -147,7 +147,7 @@ public class AClass extends AppCompatActivity {
                                     public void onDataChange(DataSnapshot dataSnapshot) {
                                         String tid = null;
                                         for(DataSnapshot ds : dataSnapshot.getChildren()) {
-                                            ClassObj classTemp = ds.getValue(ClassObj.class);
+                                            chapterObj classTemp = ds.getValue(chapterObj.class);
                                             String TidTemp = ds.getKey();
                                             if (classTemp.get_name().equals(items.get(position))){
                                                 tid = TidTemp;
@@ -155,7 +155,7 @@ public class AClass extends AppCompatActivity {
                                             }
                                         }
                                         if (tid != null){
-                                            ClassObj.deletFromDB(tid);
+                                            chapterObj.deletFromDB(tid);
                                             printItemList(_search.getText().toString());
                                         }
                                     }
@@ -192,7 +192,7 @@ public class AClass extends AppCompatActivity {
                 subItems = new ArrayList<>();
                 for(DataSnapshot ds : dataSnapshot.getChildren()) {
                     String key = ds.getKey();
-                    ClassObj Class = ds.getValue(ClassObj.class);
+                    chapterObj Class = ds.getValue(chapterObj.class);
                     if (Class.get_name().contains(search)){
                         tids.add(key);
                         items.add(Class.get_name());

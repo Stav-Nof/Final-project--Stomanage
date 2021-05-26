@@ -21,7 +21,7 @@ import androidx.core.content.ContextCompat;
 import com.SandY.stomanage.Adapters.AdapterTextSubTextImage;
 import com.SandY.stomanage.Administrator.Regiment;
 import com.SandY.stomanage.R;
-import com.SandY.stomanage.dataObject.ClassObj;
+import com.SandY.stomanage.dataObject.chapterObj;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -98,8 +98,8 @@ public class HCClass extends AppCompatActivity {
     }
 
     private void modifyActivity(){
-        _header.setText(getResources().getString(R.string.classes));
-        _search.setHint(getResources().getString(R.string.class_name));
+        _header.setText(getResources().getString(R.string.chapters));
+        _search.setHint(getResources().getString(R.string.chapters_name));
         _clear.setVisibility(View.INVISIBLE);
     }
 
@@ -134,7 +134,7 @@ public class HCClass extends AppCompatActivity {
                 subItems = new ArrayList<>();
                 for(DataSnapshot ds : dataSnapshot.getChildren()) {
                     String key = ds.getKey();
-                    ClassObj Class = ds.getValue(ClassObj.class);
+                    chapterObj Class = ds.getValue(chapterObj.class);
                     if (Class.get_name().contains(search)){
                         cids.add(key);
                         items.add(Class.get_name());

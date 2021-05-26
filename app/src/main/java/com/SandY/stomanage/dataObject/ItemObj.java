@@ -6,38 +6,40 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.io.Serializable;
 import java.util.HashMap;
 
-public class EquipmentObj implements Serializable {
+public class ItemObj implements Serializable {
 
     private String _name;
     private boolean _returnedable;
     private String _supplier;
+    private  double _quantity;
     private HashMap<String, String>  notes;
 
-    public EquipmentObj(){}
+    public ItemObj(){}
 
-    public EquipmentObj(String name, boolean returnedable, String supplier){
+    public ItemObj(String name, boolean returnedable, String supplier){
         this._name = name;
         this._returnedable = returnedable;
         this._supplier = supplier;
-        notes = new HashMap<>();
+        this.notes = new HashMap<>();
+        this._quantity = 0;
     }
 
-    public void WriteToDB(){
+    public void WriteToDB(String cid){
         DatabaseReference DBRef = FirebaseDatabase.getInstance().getReference();
-        String Eid = DBRef.push().getKey();
-        DBRef = DBRef.child("Equipment").child(Eid);
+        String iid = DBRef.push().getKey();
+        DBRef = DBRef.child("Warehouses").child(cid).child(iid);
         DBRef.setValue(this);
     }
 
-    public void updateToDB(String Eid){
+    public void updateToDB(String cid, String iid){
         DatabaseReference DBRef = FirebaseDatabase.getInstance().getReference();
-        DBRef = DBRef.child("Equipment").child(Eid);
+        DBRef = DBRef.child("Warehouses").child(cid).child(iid);
         DBRef.setValue(this);
     }
 
-    public static void deletFromDB(String Eid){
+    public static void deletFromDB(String cid, String iid){
         DatabaseReference DBRef = FirebaseDatabase.getInstance().getReference();
-        DBRef = DBRef.child("Equipment").child(Eid);
+        DBRef = DBRef.child("Warehouses").child(cid).child(iid);
         DBRef.setValue(null);
     }
 
@@ -64,6 +66,10 @@ public class EquipmentObj implements Serializable {
     public void set_supplier(String _supplier) {
         this._supplier = _supplier;
     }
+
+    public double get_quantity() { return _quantity; }
+
+    public void set_quantity(double _quantity) { this._quantity = _quantity; }
 
     public HashMap<String, String> getNotes() {
         return notes;

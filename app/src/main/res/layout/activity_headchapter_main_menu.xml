@@ -43,7 +43,7 @@
                     android:layout_margin="10dp"/>
 
                 <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/troopIcon"
+                    android:id="@+id/calssIcon"
                     android:layout_width="90dp"
                     android:layout_height="90dp"
                     android:layout_below="@+id/name"
@@ -105,7 +105,7 @@
                     </androidx.cardview.widget.CardView>
 
                     <androidx.cardview.widget.CardView
-                        android:id="@+id/troopCard"
+                        android:id="@+id/chaptersCard"
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
@@ -128,13 +128,13 @@
                             <ImageView
                                 android:layout_width="150dp"
                                 android:layout_height="140dp"
-                                android:src="@drawable/classes"/>
+                                android:src="@drawable/chapters"/>
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="10dp"
-                                android:text="@string/classes"
+                                android:text="@string/chapters"
                                 android:textColor="@color/black"
                                 android:textSize="20sp"/>
 
@@ -151,7 +151,7 @@
                     android:orientation="horizontal">
 
                     <androidx.cardview.widget.CardView
-                        android:id="@+id/equipmentCard"
+                        android:id="@+id/arehousCard"
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
@@ -180,44 +180,6 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="10dp"
-                                android:text="@string/equipment"
-                                android:textColor="@color/black"
-                                android:textSize="20sp"/>
-
-                        </LinearLayout>
-
-                    </androidx.cardview.widget.CardView>
-
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/warehousesCard"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="1dp"
-                        app:cardElevation="10dp">
-
-                        <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:scaleType="fitXY"
-                            android:src="@drawable/card_edge" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:gravity="center"
-                            android:orientation="vertical"
-                            android:padding="16dp">
-
-                            <ImageView
-                                android:layout_width="150dp"
-                                android:layout_height="140dp"
-                                android:src="@drawable/warehouses"/>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
                                 android:text="@string/warehouses"
                                 android:textColor="@color/black"
                                 android:textSize="20sp"/>
@@ -225,14 +187,6 @@
                         </LinearLayout>
 
                     </androidx.cardview.widget.CardView>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:orientation="horizontal">
 
                     <androidx.cardview.widget.CardView
                         android:id="@+id/factoriesCard"
@@ -272,8 +226,16 @@
 
                     </androidx.cardview.widget.CardView>
 
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal">
+
                     <androidx.cardview.widget.CardView
-                        android:id="@+id/tempCard"
+                        android:id="@+id/newYearCard"
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_height="wrap_content"
@@ -295,13 +257,52 @@
 
                             <ImageView
                                 android:layout_width="150dp"
-                                android:layout_height="140dp"/>
+                                android:layout_height="140dp"
+                                android:src="@drawable/image_not_available"/>
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="10dp"
-                                android:text=""
+                                android:text="@string/new_year"
+                                android:textColor="@color/black"
+                                android:textSize="20sp"/>
+
+                        </LinearLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/classesCard"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="1dp"
+                        app:cardElevation="10dp">
+
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/card_edge" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:padding="16dp">
+
+                            <ImageView
+                                android:layout_width="150dp"
+                                android:layout_height="140dp"
+                                android:src="@drawable/image_not_available"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:text="@string/Class"
                                 android:textColor="@color/black"
                                 android:textSize="20sp"/>
 

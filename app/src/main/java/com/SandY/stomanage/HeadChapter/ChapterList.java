@@ -1,4 +1,5 @@
-package com.SandY.stomanage.Administrator;
+package com.SandY.stomanage.HeadChapter;
+
 
 import android.Manifest;
 import android.content.DialogInterface;
@@ -13,21 +14,25 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
 import com.SandY.stomanage.Adapters.AdapterTextSubTextImage;
 import com.SandY.stomanage.R;
+import com.SandY.stomanage.dataObject.chapterObj;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClassSelectToWarehouses extends AppCompatActivity {
+public class ChapterList extends AppCompatActivity {
 
     private static final int WRITE_EXTERNAL_STORAGE_CODE = 399;
 
@@ -38,7 +43,7 @@ public class ClassSelectToWarehouses extends AppCompatActivity {
 
     List<String> items;
     List<String> subItems;
-    List<String> TID;
+    List<String> chids;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,16 +66,16 @@ public class ClassSelectToWarehouses extends AppCompatActivity {
     }
 
     private void downloadPermissions(){
-        if (ContextCompat.checkSelfPermission(ClassSelectToWarehouses.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){return;}
+        if (ContextCompat.checkSelfPermission(ChapterList.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){return;}
         else{
-            if (ActivityCompat.shouldShowRequestPermissionRationale(ClassSelectToWarehouses.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)){
-                new AlertDialog.Builder(ClassSelectToWarehouses.this)
+            if (ActivityCompat.shouldShowRequestPermissionRationale(ChapterList.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)){
+                new AlertDialog.Builder(ChapterList.this)
                         .setTitle(getResources().getString(R.string.perm_needed))
                         .setMessage(getResources().getString(R.string.storage_perm_message_write))
                         .setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                ActivityCompat.requestPermissions(ClassSelectToWarehouses.this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_EXTERNAL_STORAGE_CODE);
+                                ActivityCompat.requestPermissions(ChapterList.this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_EXTERNAL_STORAGE_CODE);
                             }
                         })
                         .setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
@@ -82,7 +87,7 @@ public class ClassSelectToWarehouses extends AppCompatActivity {
                         .create().show();
             }
             else{
-                ActivityCompat.requestPermissions(ClassSelectToWarehouses.this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_EXTERNAL_STORAGE_CODE);
+                ActivityCompat.requestPermissions(ChapterList.this, new String[] {Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_EXTERNAL_STORAGE_CODE);
             }
         }
     }
@@ -100,7 +105,7 @@ public class ClassSelectToWarehouses extends AppCompatActivity {
         _clear.setVisibility(View.INVISIBLE);
     }
 
-    private void setClicks() {
+    private void setClicks(){
         _clear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -111,9 +116,10 @@ public class ClassSelectToWarehouses extends AppCompatActivity {
         _itemslist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(ClassSelectToWarehouses.this, Warehouses.class);
-                intent.putExtra("chapterName", items.get(position));
-                intent.putExtra("tid", TID.get(position));
+                String chapterClicked = items.get(position);
+                Intent intent = new Intent(ChapterList.this, ClassesList.class);
+                intent.putExtra("chapterName", chapterClicked);
+                intent.putExtra("chid", chids.get(position));
                 startActivity(intent);
             }
         });
@@ -121,24 +127,23 @@ public class ClassSelectToWarehouses extends AppCompatActivity {
 
     private void printItemList(String search){
         DatabaseReference DBRef = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference ref = DBRef.child("chapters");
+        DatabaseReference ref = DBRef.child("Chapters");
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                TID = new ArrayList<>();
+                chids = new ArrayList<>();
                 items = new ArrayList<>();
                 subItems = new ArrayList<>();
                 for(DataSnapshot ds : dataSnapshot.getChildren()) {
-                    String chapterID = ds.getKey();
-                    String item = ds.child("_name").getValue(String.class);
-                    String  subItem = ds.child("_leadership").getValue(String.class);
-                    if (item.contains(search)){
-                        items.add(item);
-                        subItems.add(subItem);
-                        TID.add(chapterID);
+                    String key = ds.getKey();
+                    chapterObj chapter = ds.getValue(chapterObj.class);
+                    if (chapter.get_name().contains(search)){
+                        chids.add(key);
+                        items.add(chapter.get_name());
+                        subItems.add(chapter.get_leadership());
                     }
                 }
-                AdapterTextSubTextImage adapter = new AdapterTextSubTextImage(ClassSelectToWarehouses.this, items, subItems, "chapters", ".png", getResources().getDrawable(R.drawable.image_not_available));
+                AdapterTextSubTextImage adapter = new AdapterTextSubTextImage(ChapterList.this, items, subItems, "Chapters", ".png", getResources().getDrawable(R.drawable.image_not_available));
                 _itemslist.setAdapter(adapter);
             }
 

@@ -19,11 +19,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.SandY.stomanage.Adapters.AdapterTextSubText;
-import com.SandY.stomanage.Adapters.AdapterTextSubTextImage;
-import com.SandY.stomanage.Administrator.Regiment;
 import com.SandY.stomanage.GlobalConstants;
 import com.SandY.stomanage.R;
-import com.SandY.stomanage.dataObject.RegimentObj;
+import com.SandY.stomanage.dataObject.ClassObj;
 import com.SandY.stomanage.dataObject.UserObj;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -33,7 +31,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Storekeepers extends AppCompatActivity {
 
@@ -46,7 +43,7 @@ public class Storekeepers extends AppCompatActivity {
     ArrayList<UserObj> users;
 
     ArrayList<String> rids;
-    ArrayList<RegimentObj> regiments;
+    ArrayList<ClassObj> regiments;
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +90,7 @@ public class Storekeepers extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot RegimentSnapshot) {
                         for(DataSnapshot regimentDs : RegimentSnapshot.getChildren()) {
                             rids.add(regimentDs.getKey());
-                            regiments.add(regimentDs.getValue(RegimentObj.class));
+                            regiments.add(regimentDs.getValue(ClassObj.class));
                         }
                         for(DataSnapshot ds : snapshot.getChildren()) {
                             String uid = ds.getKey();

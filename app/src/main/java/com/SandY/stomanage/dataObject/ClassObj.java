@@ -1,68 +1,41 @@
 package com.SandY.stomanage.dataObject;
 
-import android.app.ProgressDialog;
-import android.content.ContentResolver;
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.net.Uri;
-import android.provider.MediaStore;
-import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
-import java.io.File;
-import java.io.InputStream;
 import java.io.Serializable;
 import java.util.HashMap;
 
 public class ClassObj implements Serializable {
 
     private String _name;
-    private String _leadership;
+    private String _ageGroup;
 
-    public ClassObj(String _name, String _leadership) {
-        this._name = _name;
-        this._leadership = _leadership;
+
+    public ClassObj(String name, String ageGroup) {
+        this._name = name;
+        this._ageGroup = ageGroup;
+
     }
 
     public ClassObj() { }
 
-    public void WriteNewToDB(){
+    public void WriteNewToDB(String chid){
         DatabaseReference DBRef = FirebaseDatabase.getInstance().getReference();
-        String cid = DBRef.push().getKey();
-        DBRef = DBRef.child("Classes").child(cid);
+        String clid = DBRef.push().getKey();
+        DBRef = DBRef.child("Classes").child(chid).child(clid);
         DBRef.setValue(this);
     }
 
-    public void updateToDB(String cid){
+    public static void deletFromDB(String chid, String clid){
         DatabaseReference DBRef = FirebaseDatabase.getInstance().getReference();
-        DBRef = DBRef.child("Classes").child(cid);
-        DBRef.setValue(this);
-    }
-
-    public static void deletFromDB(String cid){
-        DatabaseReference DBRef = FirebaseDatabase.getInstance().getReference();
-        DBRef = DBRef.child("Classes").child(cid);
+        DBRef = DBRef.child("Classes").child(chid).child(clid);
         DBRef.setValue(null);
     }
-
-    public String get_leadership() {
-        return _leadership;
-    }
-
-    public void set_leadership(String _leadership) {
-        this._leadership = _leadership;
+    public void updateDB(String chid, String clid){
+        DatabaseReference DBRef = FirebaseDatabase.getInstance().getReference();
+        DBRef = DBRef.child("Classes").child(chid).child(clid);
+        DBRef.setValue(this);
     }
 
     public String get_name() {
@@ -73,4 +46,11 @@ public class ClassObj implements Serializable {
         this._name = _name;
     }
 
+    public String get_ageGroup() {
+        return _ageGroup;
+    }
+
+    public void set_ageGroup(String _ageGroup) {
+        this._ageGroup = _ageGroup;
+    }
 }

@@ -69,12 +69,12 @@ public class HeadWarehouseTeamMainMenu extends AppCompatActivity {
         _equipment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DatabaseReference DBRef = FirebaseDatabase.getInstance().getReference().child("Troops").child(user.getCid());
+                DatabaseReference DBRef = FirebaseDatabase.getInstance().getReference().child("chapters").child(user.getCid());
                 DBRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         Intent intent = new Intent(HeadWarehouseTeamMainMenu.this, Warehouses.class);
-                        intent.putExtra("troopName", snapshot.child("_name").getValue(String.class));
+                        intent.putExtra("chapterName", snapshot.child("_name").getValue(String.class));
                         intent.putExtra("tid", user.getCid());
                         startActivity(intent);
                     }

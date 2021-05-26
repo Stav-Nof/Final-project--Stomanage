@@ -23,7 +23,7 @@ import androidx.core.content.ContextCompat;
 
 import com.SandY.stomanage.GlobalConstants;
 import com.SandY.stomanage.R;
-import com.SandY.stomanage.dataObject.ClassObj;
+import com.SandY.stomanage.dataObject.chapterObj;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
@@ -44,9 +44,9 @@ public class NewClass extends AppCompatActivity {
     private static final int READ_EXTERNAL_STORAGE_CODE = 698;
     private static final int PICK_AN_IMAGE_FROM_STORAGE_CODE = 334;
 
-    CircleImageView _troopImage;
+    CircleImageView _chapterImage;
     Spinner _leadership;
-    EditText _troopName;
+    EditText _chapterName;
     ImageButton _add;
 
     Uri uri = null;
@@ -54,7 +54,7 @@ public class NewClass extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_class);
+        setContentView(R.layout.activity_new_chapter);
 
         attachFromXml();
         modifyActivity();
@@ -62,8 +62,8 @@ public class NewClass extends AppCompatActivity {
     }
 
     private void attachFromXml(){
-        _troopName = findViewById(R.id.troopName);
-        _troopImage = findViewById(R.id.troopImage);
+        _chapterName = findViewById(R.id.chapterName);
+        _chapterImage = findViewById(R.id.chapterImage);
         _add = findViewById(R.id.createNew);
         _leadership = findViewById(R.id.leadership);
     }
@@ -82,7 +82,7 @@ public class NewClass extends AppCompatActivity {
     }
 
     private void setClicks() {
-        _troopImage.setOnClickListener(new View.OnClickListener() {
+        _chapterImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (ContextCompat.checkSelfPermission(NewClass.this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
@@ -123,23 +123,23 @@ public class NewClass extends AppCompatActivity {
                     Toast.makeText(NewClass.this, getResources().getString(R.string.select_leadership_error), Toast.LENGTH_LONG).show();
                     return;
                 }
-                if (_troopName.getText().toString().isEmpty()){
-                    _troopName.setError(getResources().getString(R.string.class_name));
-                    _troopName.requestFocus();
+                if (_chapterName.getText().toString().isEmpty()){
+                    _chapterName.setError(getResources().getString(R.string.chapters_name));
+                    _chapterName.requestFocus();
                     return;
                 }
 
 
                 DatabaseReference DBRef = FirebaseDatabase.getInstance().getReference();
-                DatabaseReference ref = DBRef.child("Troops");
+                DatabaseReference ref = DBRef.child("chapters");
                 ValueEventListener valueEventListener = new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         for(DataSnapshot ds : dataSnapshot.getChildren()) {
                             String item = ds.child("_name").getValue(String.class);
-                            if (item.equals(_troopName.getText().toString())){
-                                _troopName.setError(getResources().getString(R.string.name_already_exists));
-                                _troopName.requestFocus();
+                            if (item.equals(_chapterName.getText().toString())){
+                                _chapterName.setError(getResources().getString(R.string.name_already_exists));
+                                _chapterName.requestFocus();
                                 return;
                             }
                         }
@@ -148,12 +148,12 @@ public class NewClass extends AppCompatActivity {
                         progressDialog.setTitle(getResources().getString(R.string.uploading));
                         progressDialog.show();
 
-                        ClassObj troop = new ClassObj(_troopName.getText().toString(), _leadership.getSelectedItem().toString());
-                        troop.WriteNewToDB();
+                        chapterObj chapter = new chapterObj(_chapterName.getText().toString(), _leadership.getSelectedItem().toString());
+                        chapter.WriteNewToDB();
 
                         if (uri != null){
                             StorageReference storageRef = FirebaseStorage.getInstance().getReference();
-                            storageRef = storageRef.child("Troops").child(troop.get_name() + ".png");
+                            storageRef = storageRef.child("chapters").child(chapter.get_name() + ".png");
                             storageRef.putFile(uri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>(){
                                 @Override
                                 public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
@@ -191,7 +191,7 @@ public class NewClass extends AppCompatActivity {
 
         if (requestCode == PICK_AN_IMAGE_FROM_STORAGE_CODE  && resultCode  == RESULT_OK){
             uri = data.getData();
-            _troopImage.setImageURI(uri);
+            _chapterImage.setImageURI(uri);
         }
         else Toast.makeText(NewClass.this, "Action canceled", Toast.LENGTH_SHORT).show();
     }

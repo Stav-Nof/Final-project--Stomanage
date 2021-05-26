@@ -10,10 +10,14 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.SandY.stomanage.Administrator.AdministratorMainMenu;
+import com.SandY.stomanage.HeadChapter.HeadChapterMainMenu;
 import com.SandY.stomanage.HeadWarehouseTeam.HeadWarehouseTeamMainMenu;
 import com.SandY.stomanage.dataObject.UserObj;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.appcheck.FirebaseAppCheck;
+import com.google.firebase.appcheck.safetynet.SafetyNetAppCheckProviderFactory;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -32,6 +36,11 @@ public class Login extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        FirebaseApp.initializeApp(Login.this);
+        FirebaseAppCheck firebaseAppCheck = FirebaseAppCheck.getInstance();
+        firebaseAppCheck.installAppCheckProviderFactory(
+                SafetyNetAppCheckProviderFactory.getInstance());
 
         email = findViewById(R.id.email);
         password = findViewById(R.id.password);
@@ -73,6 +82,11 @@ public class Login extends AppCompatActivity {
                                     }
                                     if (user.getUserPerm().equals(GlobalConstants.Perm.מחסנאי_ראשי.toString())){
                                         Intent intent = new Intent(Login.this, HeadWarehouseTeamMainMenu.class);
+                                        startActivity(intent);
+                                        return;
+                                    }
+                                    if (user.getUserPerm().equals(GlobalConstants.Perm.ראש_שבט.toString())){
+                                        Intent intent = new Intent(Login.this, HeadChapterMainMenu.class);
                                         startActivity(intent);
                                         return;
                                     }

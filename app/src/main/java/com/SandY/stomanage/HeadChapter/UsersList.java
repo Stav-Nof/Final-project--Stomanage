@@ -1,4 +1,4 @@
-package com.SandY.stomanage.Administrator;
+package com.SandY.stomanage.HeadChapter;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,7 +11,6 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.SandY.stomanage.Adapters.AdapterTextSubText;
-import com.SandY.stomanage.HeadChapter.NewUser;
 import com.SandY.stomanage.R;
 import com.SandY.stomanage.dataObject.chapterObj;
 import com.SandY.stomanage.dataObject.UserObj;
@@ -20,11 +19,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
 
-public class Users extends AppCompatActivity {
+public class UsersList extends AppCompatActivity {
 
     ImageButton _new;
     EditText _search;
@@ -32,15 +32,20 @@ public class Users extends AppCompatActivity {
     TextView _header;
     ImageButton _clear;
 
+    String cid;
+
     ArrayList <String> usersNames;
-    ArrayList <String> chaptersNames;
-    HashMap<String, chapterObj> chapters;
+    ArrayList <String> classesNames;
+    HashMap<String, chapterObj> classes;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.template_activity_listview_add_search);
+
+        Intent intent = getIntent();
+        cid = intent.getStringExtra("cid");
 
         attachFromXml();
         modifyActivity();
@@ -77,32 +82,32 @@ public class Users extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 usersNames = new ArrayList<>();
-                chaptersNames = new ArrayList<>();
-                chapters = new HashMap<>();
-                DatabaseReference chaptersRef = DBRef.child("Classes");
-                chaptersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                classesNames = new ArrayList<>();
+                classes = new HashMap<>();
+                DatabaseReference classesRef = DBRef.child("Classes");
+                classesRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange( DataSnapshot snapshot) {
                         for(DataSnapshot Tds : snapshot.getChildren()){
-                            chapters.put(Tds.getKey(), Tds.getValue(chapterObj.class));
+                            classes.put(Tds.getKey(), Tds.getValue(chapterObj.class));
                         }
                         usersNames.clear();
-                        chaptersNames.clear();
+                        classesNames.clear();
                         for(DataSnapshot ds : dataSnapshot.getChildren()) {
                             UserObj user = ds.getValue(UserObj.class);
-                            if (user.getFirstName().contains(search) || user.getFirstName().contains(search)){
+                            if ((user.getFirstName().contains(search) || user.getFirstName().contains(search)) && user.getCid().equals(cid)){
                                 usersNames.add(user.getFirstName() + " " + user.getLastName());
-                                chaptersNames.add(chapters.get(user.getCid()).get_name());
+                                classesNames.add(classes.get(user.getCid()).get_name());
                             }
                         }
-                        AdapterTextSubText adapter = new AdapterTextSubText(Users.this, usersNames, chaptersNames);
+                        AdapterTextSubText adapter = new AdapterTextSubText(UsersList.this, usersNames, classesNames);
                         _itemslist.setAdapter(adapter);
 
                     }
 
                     @Override
                     public void onCancelled( DatabaseError error) {
-
+                        //TODO set error
                     }
                 });
             }
@@ -119,7 +124,8 @@ public class Users extends AppCompatActivity {
         _new.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Users.this, NewUser.class);
+                Intent intent = new Intent(UsersList.this, NewUser.class);
+                intent.putExtra("cid", cid);
                 startActivity(intent);
             }
         });
