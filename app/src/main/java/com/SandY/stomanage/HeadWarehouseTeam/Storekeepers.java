@@ -79,7 +79,7 @@ public class Storekeepers extends AppCompatActivity {
                 UserObj HeadTeam = snapshot.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).getValue(UserObj.class);
                 uids = new ArrayList<>();
                 users = new ArrayList<>();
-                DatabaseReference regimentRef = DBRef.child("Regiment").child(HeadTeam.getCid());
+                DatabaseReference regimentRef = DBRef.child("Classes").child(HeadTeam.getCid());
                 rids = new ArrayList<>();
                 regiments = new ArrayList<>();
                 //lists to print

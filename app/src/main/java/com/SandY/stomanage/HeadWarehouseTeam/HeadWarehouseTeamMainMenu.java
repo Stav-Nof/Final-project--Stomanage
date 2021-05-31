@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import com.SandY.stomanage.Administrator.Warehouses;
+import com.SandY.stomanage.HeadChapter.WarehouseItemList;
 import com.SandY.stomanage.R;
 import com.SandY.stomanage.dataObject.UserObj;
 import com.google.firebase.auth.FirebaseAuth;
@@ -73,9 +74,8 @@ public class HeadWarehouseTeamMainMenu extends AppCompatActivity {
                 DBRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        Intent intent = new Intent(HeadWarehouseTeamMainMenu.this, Warehouses.class);
-                        intent.putExtra("chapterName", snapshot.child("_name").getValue(String.class));
-                        intent.putExtra("tid", user.getCid());
+                        Intent intent = new Intent(HeadWarehouseTeamMainMenu.this, WarehouseItemList.class);
+                        intent.putExtra("cid", user.getCid());
                         startActivity(intent);
                     }
 

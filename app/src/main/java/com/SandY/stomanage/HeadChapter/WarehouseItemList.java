@@ -115,7 +115,7 @@ public class WarehouseItemList extends AppCompatActivity {
     }
 
     private void modifyActivity(){
-        DatabaseReference DBRef = FirebaseDatabase.getInstance().getReference().child("Classes").child(cid);
+        DatabaseReference DBRef = FirebaseDatabase.getInstance().getReference().child("Chapters").child(cid);
         DBRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
