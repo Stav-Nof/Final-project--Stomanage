@@ -63,6 +63,7 @@
     <!--warehouses-->
     <string name="warehouses">Warehouses</string>
     <string name="update_quantity">Update quantity</string>
+    <string name="select_quantity">Select quantity</string>
     <string name="update">Update</string>
     <!--factories-->
     <string name="factories">Factories</string>
@@ -70,8 +71,13 @@
     <string name="storekeeper">Storekeeper</string>
     <!--Orders-->
     <string name="orders">Orders</string>
-    <!--New order-->
-    <string name="new_order">New order</string>
+    <string name="my_orders">My orders</string>
+    <string name="order_name">Enter order name</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+    <string name="new_order">Creating a new order</string>
+    <string name="invalid_date">The selected date is invalid</string>
+    <string name="select_item">Select an item</string>
     <!--open orders-->
     <string name="open_orders">Open orders</string>
     <!--Order history-->

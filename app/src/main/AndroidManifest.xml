@@ -21,6 +21,10 @@
         <activity android:name=".HeadChapter.ChapterList"/>
         <activity android:name=".HeadChapter.UsersList"/>
         <activity android:name=".HeadChapter.HeadChapterMainMenu"/>
+        <activity android:name=".HeadWarehouseTeam.ItemSelectForEditOrder"/>
+        <activity android:name=".HeadWarehouseTeam.NewOrder"/>
+        <activity android:name=".HeadWarehouseTeam.EditOrder"/>
+        <activity android:name=".HeadWarehouseTeam.MyOrders"/>
         <activity android:name=".HeadWarehouseTeam.Storekeepers"/>
         <activity android:name=".HeadWarehouseTeam.HeadWarehouseTeamMainMenu"/>
         <activity android:name=".Administrator.Warehouses"/>

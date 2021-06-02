@@ -7,7 +7,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
-import com.SandY.stomanage.Administrator.Warehouses;
 import com.SandY.stomanage.HeadChapter.WarehouseItemList;
 import com.SandY.stomanage.R;
 import com.SandY.stomanage.dataObject.UserObj;
@@ -18,10 +17,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+
 public class HeadWarehouseTeamMainMenu extends AppCompatActivity {
 
     TextView _name;
-    CardView _storekeeper, _equipment;
+    CardView _storekeeper, _equipment, _orders;
 
     UserObj user;
 
@@ -40,6 +40,7 @@ public class HeadWarehouseTeamMainMenu extends AppCompatActivity {
         _name = findViewById(R.id.name);
         _storekeeper = findViewById(R.id.storekeeperCard);
         _equipment = findViewById(R.id.equipmentCard);
+        _orders = findViewById(R.id.ordersCard);
     }
 
     private void modifyActivity(){
@@ -85,6 +86,27 @@ public class HeadWarehouseTeamMainMenu extends AppCompatActivity {
                     }
                 });
 
+            }
+        });
+
+        _orders.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatabaseReference DBRef = FirebaseDatabase.getInstance().getReference().child("chapters").child(user.getCid());
+                DBRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        Intent intent = new Intent(HeadWarehouseTeamMainMenu.this, MyOrders.class);
+                        intent.putExtra("uid", FirebaseAuth.getInstance().getCurrentUser().getUid());
+                        intent.putExtra("cid", user.getCid());
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        //TODO set error
+                    }
+                });
             }
         });
 
