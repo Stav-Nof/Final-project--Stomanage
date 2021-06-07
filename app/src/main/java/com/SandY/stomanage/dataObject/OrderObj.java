@@ -86,5 +86,7 @@ public class OrderObj implements Serializable {
         this._order = _order;
     }
 
-
+    public String getStringDate(){
+        return this._date.get_day() + "-" + this._date.get_month() + "-" + this._date.get_year();
+    }
 }

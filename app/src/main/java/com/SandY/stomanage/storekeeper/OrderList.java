@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -32,6 +33,7 @@ public class OrderList extends AppCompatActivity {
     UserObj user;
 
     ArrayList<String> oids;
+    ArrayList<String> uids;
     ArrayList<String> orderNames;
     ArrayList<String> OrderDates;
 
@@ -75,6 +77,7 @@ public class OrderList extends AppCompatActivity {
                     @Override
                     public void onDataChange(DataSnapshot snapshot) {
                         oids = new ArrayList<>();
+                        uids = new ArrayList<>();
                         orderNames = new ArrayList<>();
                         OrderDates = new ArrayList<>();
                         for (DataSnapshot ds : snapshot.getChildren()){
@@ -89,6 +92,7 @@ public class OrderList extends AppCompatActivity {
                                             OrderObj order = orderDs.getValue(OrderObj.class);
                                             if (order.get_name().contains(search)){
                                                 oids.add(orderDs.getKey());
+                                                uids.add(uid);
                                                 orderNames.add(tempUser.getFirstName() + " " + tempUser.getLastName());
                                                 OrderDates.add(order.get_date().get_day() + "-" + order.get_date().get_month() + "-" + order.get_date().get_year());
                                             }
@@ -126,6 +130,17 @@ public class OrderList extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 _search.setText("");
+            }
+        });
+
+        _itemslist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(OrderList.this, OrderPreparation.class);
+                intent.putExtra("uid", uids.get(position));
+                intent.putExtra("cid", user.getCid());
+                intent.putExtra("oid", oids.get(position));
+                startActivity(intent);
             }
         });
     }

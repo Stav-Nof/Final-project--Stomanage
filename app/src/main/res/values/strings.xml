@@ -2,6 +2,7 @@
     <!--global-->
     <string name="app_name">Stomanage</string>
     <string name="welcome_messages">Hello, %1$s</string>
+    <string name="name_and_date">%1$s - %2$s</string>
     <string name="welcome">Welcome </string>
     <string name="ok">ok</string>
     <string name="cancel">cancel</string>
@@ -81,6 +82,8 @@
     <string name="invalid_date">The selected date is invalid</string>
     <string name="select_item">Select an item</string>
     <string name="delete_order_message">Are you sure you want to delete this order?</string>
+    <string name="allow_order_editing">Allow order editing</string>
+    <string name="order_ready">Order ready</string>
     <!--open orders-->
     <string name="open_orders">Open orders</string>
     <!--Order history-->

@@ -2,6 +2,8 @@ package com.SandY.stomanage;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -28,6 +30,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 
 public class Login extends AppCompatActivity {
@@ -40,79 +43,94 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        FirebaseApp.initializeApp(Login.this);
-        FirebaseAppCheck firebaseAppCheck = FirebaseAppCheck.getInstance();
-        firebaseAppCheck.installAppCheckProviderFactory(
-                SafetyNetAppCheckProviderFactory.getInstance());
+        NotificationService.createNotificationChannels(Login.this);
+        NotificationService.NotificationOrders(Login.this, "yarin 1", "or");
+        NotificationService.NotificationFactories(Login.this, "yarin", "or 2");
 
-        email = findViewById(R.id.email);
-        password = findViewById(R.id.password);
-        login = findViewById(R.id.login);
 
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(email.getText().toString().isEmpty()){
-                    email.setError(getResources().getString(R.string.email_error));
-                    email.requestFocus();
-                    return;
-                }
-                if(password.getText().toString().isEmpty()){
-                    password.setError(getResources().getString(R.string.password_error));
-                    password.requestFocus();
-                    return;
-                }
-                //TODO set error to less then 6 char password
-                FirebaseAuth _auth = FirebaseAuth.getInstance();
-                _auth.signInWithEmailAndPassword(email.getText().toString(),password.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        password.setText("");
-                        if(task.isSuccessful()){
-                            String uid = task.getResult().getUser().getUid();
-                            DatabaseReference DBRef = FirebaseDatabase.getInstance().getReference().child("Users").child(uid);
-                            DBRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    UserObj user = snapshot.getValue(UserObj.class);
-                                    if (user.getUserPerm().equals(GlobalConstants.Perm.מדריך.toString())){
-                                        Intent intent = new Intent(Login.this, GuiderMainMenu.class);
-                                        startActivity(intent);
-                                        return;
-                                    }
-                                    if (user.getUserPerm().equals(GlobalConstants.Perm.מחסנאי.toString())){
-                                        Intent intent = new Intent(Login.this, StorekeeperMainMenu.class);
-                                        startActivity(intent);
-                                        return;
-                                    }
-                                    if (user.getUserPerm().equals(GlobalConstants.Perm.מחסנאי_ראשי.toString())){
-                                        Intent intent = new Intent(Login.this, HeadWarehouseTeamMainMenu.class);
-                                        startActivity(intent);
-                                        return;
-                                    }
-                                    if (user.getUserPerm().equals(GlobalConstants.Perm.ראש_שבט.toString())){
-                                        Intent intent = new Intent(Login.this, HeadChapterMainMenu.class);
-                                        startActivity(intent);
-                                        return;
-                                    }
-                                    if (user.getUserPerm().equals(GlobalConstants.Perm.מנהל.toString())){
-                                        Intent intent = new Intent(Login.this, AdministratorMainMenu.class);
-                                        startActivity(intent);
-                                        return;
-                                    }
-                                }
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError error) {
-                                    Toast.makeText(Login.this, "Login eeror: " + error.getMessage(), Toast.LENGTH_LONG).show();
-                                }
-                            });
-                        }
-                        else{
-                            //TODO set error to fail login
-                        }
-                    }
-                });
-            }
-        });
+
+//        FirebaseApp.initializeApp(Login.this);
+//        FirebaseAppCheck firebaseAppCheck = FirebaseAppCheck.getInstance();
+//        firebaseAppCheck.installAppCheckProviderFactory(
+//                SafetyNetAppCheckProviderFactory.getInstance());
+//
+//        email = findViewById(R.id.email);
+//        password = findViewById(R.id.password);
+//        login = findViewById(R.id.login);
+//
+//        login.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if(email.getText().toString().isEmpty()){
+//                    email.setError(getResources().getString(R.string.email_error));
+//                    email.requestFocus();
+//                    return;
+//                }
+//                if(password.getText().toString().isEmpty()){
+//                    password.setError(getResources().getString(R.string.password_error));
+//                    password.requestFocus();
+//                    return;
+//                }
+//                //TODO set error to less then 6 char password
+//                FirebaseAuth _auth = FirebaseAuth.getInstance();
+//                _auth.signInWithEmailAndPassword(email.getText().toString(),password.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<AuthResult> task) {
+//                        password.setText("");
+//                        if(task.isSuccessful()){
+//                            String uid = task.getResult().getUser().getUid();
+//                            DatabaseReference DBRef = FirebaseDatabase.getInstance().getReference().child("Users").child(uid);
+//                            FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
+//                                @Override
+//                                public void onComplete(Task<String> task) {
+//                                    if (task.isSuccessful()){
+//                                        DBRef.child("token").setValue(task.getResult());
+//                                    }
+//                                }
+//                            });
+//
+//                            DBRef.addListenerForSingleValueEvent(new ValueEventListener() {
+//                                @Override
+//                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                                    UserObj user = snapshot.getValue(UserObj.class);
+//                                    if (user.getUserPerm().equals(GlobalConstants.Perm.מדריך.toString())){
+//                                        Intent intent = new Intent(Login.this, GuiderMainMenu.class);
+//                                        startActivity(intent);
+//                                        return;
+//                                    }
+//                                    if (user.getUserPerm().equals(GlobalConstants.Perm.מחסנאי.toString())){
+//                                        Intent intent = new Intent(Login.this, StorekeeperMainMenu.class);
+//                                        startActivity(intent);
+//                                        return;
+//                                    }
+//                                    if (user.getUserPerm().equals(GlobalConstants.Perm.מחסנאי_ראשי.toString())){
+//                                        Intent intent = new Intent(Login.this, HeadWarehouseTeamMainMenu.class);
+//                                        startActivity(intent);
+//                                        return;
+//                                    }
+//                                    if (user.getUserPerm().equals(GlobalConstants.Perm.ראש_שבט.toString())){
+//                                        Intent intent = new Intent(Login.this, HeadChapterMainMenu.class);
+//                                        startActivity(intent);
+//                                        return;
+//                                    }
+//                                    if (user.getUserPerm().equals(GlobalConstants.Perm.מנהל.toString())){
+//                                        Intent intent = new Intent(Login.this, AdministratorMainMenu.class);
+//                                        startActivity(intent);
+//                                        return;
+//                                    }
+//                                }
+//                                @Override
+//                                public void onCancelled(@NonNull DatabaseError error) {
+//                                    Toast.makeText(Login.this, "Login eeror: " + error.getMessage(), Toast.LENGTH_LONG).show();
+//                                }
+//                            });
+//                        }
+//                        else{
+//                            //TODO set error to fail login
+//                        }
+//                    }
+//                });
+//            }
+//        });
     }
 }

@@ -12,7 +12,7 @@ public class ItemObj implements Serializable {
     private boolean _returnedable;
     private String _supplier;
     private  double _quantity;
-    private HashMap<String, String>  notes;
+
 
     public ItemObj(){}
 
@@ -20,7 +20,6 @@ public class ItemObj implements Serializable {
         this._name = name;
         this._returnedable = returnedable;
         this._supplier = supplier;
-        this.notes = new HashMap<>();
         this._quantity = 0;
     }
 
@@ -70,13 +69,5 @@ public class ItemObj implements Serializable {
     public double get_quantity() { return _quantity; }
 
     public void set_quantity(double _quantity) { this._quantity = _quantity; }
-
-    public HashMap<String, String> getNotes() {
-        return notes;
-    }
-
-    public void setNotes(HashMap<String, String> notes) {
-        this.notes = notes;
-    }
 
 }
