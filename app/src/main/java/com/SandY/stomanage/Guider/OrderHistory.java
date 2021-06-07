@@ -1,5 +1,6 @@
-package com.SandY.stomanage.HeadWarehouseTeam;
+package com.SandY.stomanage.Guider;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -8,23 +9,23 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
 import com.SandY.stomanage.Adapters.AdapterTextSubText;
-import com.SandY.stomanage.HeadChapter.NewUser;
-import com.SandY.stomanage.HeadChapter.UsersList;
 import com.SandY.stomanage.R;
 import com.SandY.stomanage.dataObject.OrderObj;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 
-public class MyOrders extends AppCompatActivity {
+public class OrderHistory extends AppCompatActivity {
 
-    ImageButton _new;
     EditText _search;
     ListView _itemslist;
     TextView _header;
@@ -44,12 +45,11 @@ public class MyOrders extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.template_activity_listview_add_search);
+        setContentView(R.layout.template_activity_listview_search);
 
         Intent intent = getIntent();
         cid = intent.getStringExtra("cid");
         uid = intent.getStringExtra("uid");
-
 
         attachFromXml();
         modifyActivity();
@@ -63,9 +63,7 @@ public class MyOrders extends AppCompatActivity {
         printItemList(_search.getText().toString());
     }
 
-
     private void attachFromXml() {
-        _new = (ImageButton) findViewById(R.id.createNew);
         _search = (EditText) findViewById(R.id.searchText);
         _itemslist = (ListView) findViewById(R.id.itemslist);
         _header = (TextView) findViewById(R.id.header);
@@ -80,7 +78,7 @@ public class MyOrders extends AppCompatActivity {
 
     private void printItemList(String search) {
         DatabaseReference DBRef = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference ref = DBRef.child("Orders").child(cid).child(uid);
+        DatabaseReference ref = DBRef.child("OrderHistory").child(cid).child(uid);
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
@@ -101,7 +99,7 @@ public class MyOrders extends AppCompatActivity {
                         printedOrdersKeys.add(ordersKeys.get(orders.indexOf(order)));
                     }
                 }
-                AdapterTextSubText adapter = new AdapterTextSubText(MyOrders.this, ordersNames, ordersopen);
+                AdapterTextSubText adapter = new AdapterTextSubText(OrderHistory.this, ordersNames, ordersopen);
                 _itemslist.setAdapter(adapter);
             }
 
@@ -114,36 +112,14 @@ public class MyOrders extends AppCompatActivity {
 
 
     private void setClicks(){
-        _new.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MyOrders.this, NewOrder.class);
-                intent.putExtra("uid", uid);
-                intent.putExtra("cid", cid);
-                startActivity(intent);
-            }
-        });
-
         _itemslist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(MyOrders.this, EditOrder.class);
+                Intent intent = new Intent(OrderHistory.this, ViewOrder.class);
                 intent.putExtra("uid", uid);
                 intent.putExtra("cid", cid);
                 intent.putExtra("oid", printedOrdersKeys.get(position));
                 startActivity(intent);
-            }
-        });
-
-        _itemslist.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-
-
-
-
-
-                return false;
             }
         });
     }

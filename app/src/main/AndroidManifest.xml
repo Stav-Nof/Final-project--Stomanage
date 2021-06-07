@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.SandY.stomanage">
-
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+
 
     <application
         android:allowBackup="true"
@@ -14,6 +15,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Stomanage">
+        <activity android:name=".Guider.ItemSelectForEditOrder"/>
+        <activity android:name=".Guider.OpenTab"/>
+        <activity android:name=".Guider.OrderHistory"/>
+        <activity android:name=".Guider.GuiderMainMenu"/>
+        <activity android:name=".Guider.NewOrder"/>
+        <activity android:name=".Guider.EditOrder"/>
+        <activity android:name=".Guider.MyOrders"/>
+        <activity android:name=".storekeeper.OrderList"/>
+        <activity android:name=".storekeeper.StorekeeperMainMenu"/>
         <activity android:name=".HeadChapter.Classes"/>
         <activity android:name=".HeadChapter.NewItem"/>
         <activity android:name=".HeadChapter.WarehouseItemList"/>
@@ -21,17 +31,13 @@
         <activity android:name=".HeadChapter.ChapterList"/>
         <activity android:name=".HeadChapter.UsersList"/>
         <activity android:name=".HeadChapter.HeadChapterMainMenu"/>
-        <activity android:name=".HeadWarehouseTeam.ItemSelectForEditOrder"/>
-        <activity android:name=".HeadWarehouseTeam.NewOrder"/>
-        <activity android:name=".HeadWarehouseTeam.EditOrder"/>
-        <activity android:name=".HeadWarehouseTeam.MyOrders"/>
         <activity android:name=".HeadWarehouseTeam.Storekeepers"/>
+        <activity android:name=".HeadChapter.NewUser"/>
         <activity android:name=".HeadWarehouseTeam.HeadWarehouseTeamMainMenu"/>
         <activity android:name=".Administrator.Warehouses"/>
         <activity android:name=".Administrator.ClassSelectToWarehouses"/>
         <activity android:name=".Administrator.NewEquipment"/>
         <activity android:name=".Administrator.Equipment"/>
-        <activity android:name=".HeadChapter.NewUser"/>
         <activity android:name=".Administrator.Regiment"/>
         <activity android:name=".Administrator.Users"/>
         <activity android:name=".Administrator.NewClass"/>

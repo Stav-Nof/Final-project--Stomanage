@@ -95,7 +95,7 @@ public class WarehouseItemList extends AppCompatActivity {
                         .setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
+
                             }
                         })
                         .create().show();

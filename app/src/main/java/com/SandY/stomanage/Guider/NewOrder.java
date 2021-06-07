@@ -1,4 +1,4 @@
-package com.SandY.stomanage.HeadWarehouseTeam;
+package com.SandY.stomanage.Guider;
 
 import android.content.Intent;
 import android.os.Build;

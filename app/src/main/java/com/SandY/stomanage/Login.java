@@ -11,9 +11,11 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.SandY.stomanage.Administrator.AdministratorMainMenu;
+import com.SandY.stomanage.Guider.GuiderMainMenu;
 import com.SandY.stomanage.HeadChapter.HeadChapterMainMenu;
 import com.SandY.stomanage.HeadWarehouseTeam.HeadWarehouseTeamMainMenu;
 import com.SandY.stomanage.dataObject.UserObj;
+import com.SandY.stomanage.storekeeper.StorekeeperMainMenu;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
@@ -74,11 +76,13 @@ public class Login extends AppCompatActivity {
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                                     UserObj user = snapshot.getValue(UserObj.class);
                                     if (user.getUserPerm().equals(GlobalConstants.Perm.מדריך.toString())){
-                                        //TODO
+                                        Intent intent = new Intent(Login.this, GuiderMainMenu.class);
+                                        startActivity(intent);
                                         return;
                                     }
                                     if (user.getUserPerm().equals(GlobalConstants.Perm.מחסנאי.toString())){
-                                        //TODO
+                                        Intent intent = new Intent(Login.this, StorekeeperMainMenu.class);
+                                        startActivity(intent);
                                         return;
                                     }
                                     if (user.getUserPerm().equals(GlobalConstants.Perm.מחסנאי_ראשי.toString())){

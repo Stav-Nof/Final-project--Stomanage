@@ -7,6 +7,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+
+import com.SandY.stomanage.Guider.MyOrders;
 import com.SandY.stomanage.HeadChapter.WarehouseItemList;
 import com.SandY.stomanage.R;
 import com.SandY.stomanage.dataObject.UserObj;
@@ -16,6 +18,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import net.cachapa.expandablelayout.ExpandableLayout;
 
 
 public class HeadWarehouseTeamMainMenu extends AppCompatActivity {
@@ -29,6 +33,14 @@ public class HeadWarehouseTeamMainMenu extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_headwarehouseteam_main_menu);
+
+        ExpandableLayout test = findViewById(R.id.expandable_layout_0);
+        findViewById(R.id.expand_button_0).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                test.expand();
+            }
+        });
 
         attachFromXml();
         modifyActivity();

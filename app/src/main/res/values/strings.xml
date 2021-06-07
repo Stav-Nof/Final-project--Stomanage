@@ -1,6 +1,7 @@
 <resources>
     <!--global-->
     <string name="app_name">Stomanage</string>
+    <string name="welcome_messages">Hello, %1$s</string>
     <string name="welcome">Welcome </string>
     <string name="ok">ok</string>
     <string name="cancel">cancel</string>
@@ -71,6 +72,7 @@
     <string name="storekeeper">Storekeeper</string>
     <!--Orders-->
     <string name="orders">Orders</string>
+    <string name="order_list">Order list</string>
     <string name="my_orders">My orders</string>
     <string name="order_name">Enter order name</string>
     <string name="open">Open</string>
@@ -78,6 +80,7 @@
     <string name="new_order">Creating a new order</string>
     <string name="invalid_date">The selected date is invalid</string>
     <string name="select_item">Select an item</string>
+    <string name="delete_order_message">Are you sure you want to delete this order?</string>
     <!--open orders-->
     <string name="open_orders">Open orders</string>
     <!--Order history-->
@@ -91,6 +94,8 @@
     <string name="new_year">New year</string>
     <string name="new_year_action">New year action</string>
     <string name="new_year_action_message">Are you sure you want to perform this action?\nNote This action is not reversible</string>
-
-
+    <!--open tabs-->
+    <string name="open_tabs">Open tabs</string>
+    <!--open orders-->
+    <string name="quick_order">Quick order</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.SandY.stomanage.HeadWarehouseTeam;
+package com.SandY.stomanage.Guider;
 
 import android.Manifest;
 import android.app.Dialog;
@@ -25,11 +25,8 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.SandY.stomanage.Adapters.AdapterTextImage;
-import com.SandY.stomanage.Adapters.AdapterTextSubTextImage;
-import com.SandY.stomanage.HeadChapter.NewItem;
 import com.SandY.stomanage.R;
 import com.SandY.stomanage.dataObject.ItemObj;
-import com.SandY.stomanage.dataObject.chapterObj;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

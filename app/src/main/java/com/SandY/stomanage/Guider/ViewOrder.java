@@ -1,42 +1,32 @@
-package com.SandY.stomanage.HeadWarehouseTeam;
+package com.SandY.stomanage.Guider;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.SandY.stomanage.Adapters.AdapterTextSubText;
 import com.SandY.stomanage.Adapters.AdapterTextSubTextImage;
-import com.SandY.stomanage.HeadChapter.HeadChapterMainMenu;
-import com.SandY.stomanage.HeadChapter.WarehouseItemList;
 import com.SandY.stomanage.R;
-import com.SandY.stomanage.dataObject.DateObj;
 import com.SandY.stomanage.dataObject.ItemObj;
 import com.SandY.stomanage.dataObject.OrderObj;
-import com.SandY.stomanage.dataObject.chapterObj;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 
 
-public class EditOrder extends AppCompatActivity {
+public class ViewOrder extends AppCompatActivity {
 
-    ImageButton _new;
     EditText _search;
     ListView _itemslist;
     TextView _header;
@@ -57,7 +47,7 @@ public class EditOrder extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.template_activity_listview_add_search);
+        setContentView(R.layout.template_activity_listview_search);
 
         Intent intent = getIntent();
         cid = intent.getStringExtra("cid");
@@ -68,18 +58,10 @@ public class EditOrder extends AppCompatActivity {
         modifyActivity();
         printItemList(_search.getText().toString());
         setClicks();
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        modifyActivity();
-        printItemList(_search.getText().toString());
+        searchAction();
     }
 
     private void attachFromXml() {
-        _new = (ImageButton) findViewById(R.id.createNew);
         _search = (EditText) findViewById(R.id.searchText);
         _itemslist = (ListView) findViewById(R.id.itemslist);
         _header = (TextView) findViewById(R.id.header);
@@ -126,7 +108,7 @@ public class EditOrder extends AppCompatActivity {
                             }
                         }
                     }
-                    AdapterTextSubTextImage adapter = new AdapterTextSubTextImage(EditOrder.this, itemName, quantity, "Equipment\\" + cid, ".png", getResources().getDrawable(R.drawable.image_not_available));
+                    AdapterTextSubTextImage adapter = new AdapterTextSubTextImage(ViewOrder.this, itemName, quantity, "Equipment\\" + cid, ".png", getResources().getDrawable(R.drawable.image_not_available));
                     _itemslist.setAdapter(adapter);
                 }
             }
@@ -139,15 +121,28 @@ public class EditOrder extends AppCompatActivity {
     }
 
     private void setClicks(){
-        _new.setOnClickListener(new View.OnClickListener() {
+        _clear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(EditOrder.this, ItemSelectForEditOrder.class);
-                intent.putExtra("cid", cid);
-                intent.putExtra("uid", uid);
-                intent.putExtra("oid", oid);
-                startActivity(intent);
+                _search.setText("");
             }
+        });
+    }
+
+    private void searchAction(){
+        _search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                printItemList(_search.getText().toString());
+                if (_search.getText().toString().equals("")) _clear.setVisibility(View.INVISIBLE);
+                else _clear.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) { }
         });
     }
 }
