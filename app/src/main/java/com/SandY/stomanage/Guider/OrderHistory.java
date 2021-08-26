@@ -1,6 +1,5 @@
 package com.SandY.stomanage.Guider;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -9,10 +8,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.SandY.stomanage.Adapters.AdapterTextSubText;
 import com.SandY.stomanage.R;
 import com.SandY.stomanage.dataObject.OrderObj;
@@ -78,7 +74,7 @@ public class OrderHistory extends AppCompatActivity {
 
     private void printItemList(String search) {
         DatabaseReference DBRef = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference ref = DBRef.child("OrderHistory").child(cid).child(uid);
+        DatabaseReference ref = DBRef.child("Order history").child(cid).child(uid);
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
@@ -116,6 +112,7 @@ public class OrderHistory extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(OrderHistory.this, ViewOrder.class);
+                intent.putExtra("path", "Order history");
                 intent.putExtra("uid", uid);
                 intent.putExtra("cid", cid);
                 intent.putExtra("oid", printedOrdersKeys.get(position));

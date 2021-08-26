@@ -11,7 +11,7 @@ public class ItemObj implements Serializable {
     private String _name;
     private boolean _returnedable;
     private String _supplier;
-    private  double _quantity;
+    private double _quantity;
 
 
     public ItemObj(){}

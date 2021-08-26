@@ -3,6 +3,7 @@ package com.SandY.stomanage.Administrator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,7 +21,8 @@ import com.google.firebase.database.ValueEventListener;
 public class AdministratorMainMenu extends AppCompatActivity {
 
     TextView _name;
-    CardView _class, _users, _equipment, _warehouses;
+    CardView _class, _users;
+    ImageButton _logout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +39,7 @@ public class AdministratorMainMenu extends AppCompatActivity {
         _name = (TextView)findViewById(R.id.name);
         _class = (CardView)findViewById(R.id.classCard);
         _users = (CardView)findViewById(R.id.userCard);
-        _equipment = (CardView)findViewById(R.id.equipmentCard);
-        _warehouses = (CardView)findViewById(R.id.warehousesCard);
+        _logout = findViewById(R.id.logOut);
     }
 
     private void modifyActivity(){
@@ -73,19 +74,11 @@ public class AdministratorMainMenu extends AppCompatActivity {
             }
         });
 
-        _equipment.setOnClickListener(new View.OnClickListener() {
+        _logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(AdministratorMainMenu.this, Equipment.class);
-                startActivity(intent);
-            }
-        });
-
-        _warehouses.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(AdministratorMainMenu.this, ClassSelectToWarehouses.class);
-                startActivity(intent);
+                FirebaseAuth.getInstance().signOut();
+                finish();
             }
         });
     }

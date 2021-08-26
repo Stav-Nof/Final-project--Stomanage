@@ -33,23 +33,36 @@
                 android:gravity="center"
                 android:layout_margin="15dp">
 
-                <TextView
-                    android:id="@+id/name"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:textColor="@color/black"
-                    android:textSize="40sp"
-                    android:text=""
-                    android:layout_margin="10dp"/>
+                    android:orientation="horizontal"
+                    android:gravity="center">
+
+                    <ImageButton
+                        android:id="@+id/logOut"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:background="@drawable/logout"
+                        android:scaleType="fitXY" />
+
+                    <TextView
+                        android:id="@+id/name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:textSize="40sp"
+                        android:layout_margin="10dp"/>
+
+                </LinearLayout>
 
                 <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/calssIcon"
+                    android:id="@+id/classIcon"
                     android:layout_width="90dp"
                     android:layout_height="90dp"
                     android:layout_below="@+id/name"
                     android:layout_margin="12dp"
                     android:layout_marginTop="25dp"
-                    android:src="?attr/no_image"
                     app:layout_constraintTop_toTopOf="@+id/name" />
 
             </LinearLayout>
@@ -151,90 +164,6 @@
                     android:orientation="horizontal">
 
                     <androidx.cardview.widget.CardView
-                        android:id="@+id/arehousCard"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="1dp"
-                        app:cardElevation="10dp">
-
-                        <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:scaleType="fitXY"
-                            android:src="@drawable/card_edge" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:gravity="center"
-                            android:orientation="vertical"
-                            android:padding="16dp">
-
-                            <ImageView
-                                android:layout_width="150dp"
-                                android:layout_height="140dp"
-                                android:src="@drawable/equipment"/>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
-                                android:text="@string/warehouses"
-                                android:textColor="@color/black"
-                                android:textSize="20sp"/>
-
-                        </LinearLayout>
-
-                    </androidx.cardview.widget.CardView>
-
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/factoriesCard"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="1dp"
-                        app:cardElevation="10dp">
-
-                        <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:scaleType="fitXY"
-                            android:src="@drawable/card_edge" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:gravity="center"
-                            android:orientation="vertical"
-                            android:padding="16dp">
-
-                            <ImageView
-                                android:layout_width="150dp"
-                                android:layout_height="140dp"
-                                android:src="@drawable/factories"/>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
-                                android:text="@string/factories"
-                                android:textColor="@color/black"
-                                android:textSize="20sp"/>
-
-                        </LinearLayout>
-
-                    </androidx.cardview.widget.CardView>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:orientation="horizontal">
-
-                    <androidx.cardview.widget.CardView
                         android:id="@+id/newYearCard"
                         android:layout_width="0dp"
                         android:layout_weight="1"
@@ -296,7 +225,7 @@
                             <ImageView
                                 android:layout_width="150dp"
                                 android:layout_height="140dp"
-                                android:src="@drawable/image_not_available"/>
+                                android:src="@drawable/chapters"/>
 
                             <TextView
                                 android:layout_width="wrap_content"

@@ -14,6 +14,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import com.SandY.stomanage.GlobalConstants;
 import com.SandY.stomanage.R;
+import com.SandY.stomanage.dataObject.ClassObj;
+import com.SandY.stomanage.dataObject.ItemObj;
 import com.SandY.stomanage.dataObject.chapterObj;
 import com.SandY.stomanage.dataObject.UserObj;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -33,12 +35,12 @@ public class NewUser extends AppCompatActivity {
     private static final int PASSWORD_LENGTH = 6;
 
     EditText _firstName, _lastName, _email, _password, _confirmPassword;
-    Spinner _leadership, _chapter, _role;
+    Spinner _leadership, _chapter, _role, _class;
     ImageButton _createNew;
 
     String cid;
 
-    ArrayList<String> cids;
+    ArrayList<String> roles, clids, clnames;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +53,6 @@ public class NewUser extends AppCompatActivity {
         attachFromXml();
         modifyActivity();
         setClicks();
-
     }
 
     private void attachFromXml() {
@@ -64,63 +65,39 @@ public class NewUser extends AppCompatActivity {
         _chapter = findViewById(R.id.chapter);
         _role = findViewById(R.id.role);
         _createNew = findViewById(R.id.createNew);
+        _class = findViewById(R.id.Class);
     }
 
     private void modifyActivity(){
-        if (!cid.isEmpty()){ //TODO null?
-            _chapter.setVisibility(View.GONE);
-            _leadership.setVisibility(View.GONE);
-        }
-        GlobalConstants.leadership[]  leaderships = GlobalConstants.leadership.values();
-        ArrayList<String> leadership = new ArrayList();
-        leadership.add(getResources().getString(R.string.select_leadership));
-        for (int i = 0; i < leaderships.length; i++){
-            leadership.add(leaderships[i].toString());
-        }
-        ArrayAdapter<String> leadershipAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, leadership);
-        _leadership.setAdapter(leadershipAdapter);
+        _chapter.setVisibility(View.INVISIBLE);
+        _leadership.setVisibility(View.INVISIBLE);
 
-        cids = new ArrayList();
-        ArrayList<String> classes = new ArrayList();
-        classes.add(getResources().getString(R.string.select_class));
-        ArrayAdapter<String> chapterAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, classes);
-        _chapter.setAdapter(chapterAdapter);
-
-        _leadership.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        DatabaseReference DBRef = FirebaseDatabase.getInstance().getReference().child("Classes").child(cid);
+        DBRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                classes.clear();
-                classes.add(getResources().getString(R.string.select_class));
-                cids.clear();
-                cids.add("0");
-
-                DatabaseReference DBRef = FirebaseDatabase.getInstance().getReference();
-                DatabaseReference ref = DBRef.child("Classes");
-                ValueEventListener valueEventListener = new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        for(DataSnapshot ds : dataSnapshot.getChildren()) {
-                            chapterObj chapter = ds.getValue(chapterObj.class);
-                            if (chapter.get_leadership().equals(leadership.get(position))){
-                                classes.add(chapter.get_name());
-                                cids.add(ds.getKey());
-                            }
-                        }
-                        _chapter.setAdapter(chapterAdapter);
-                    }
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {}
-                };
-                ref.addListenerForSingleValueEvent(valueEventListener);
-
+            public void onDataChange(DataSnapshot snapshot) {
+                clids = new ArrayList<>();
+                clnames = new ArrayList<>();
+                clids.add("0");
+                clnames.add(getResources().getString(R.string.select_class));
+                for (DataSnapshot ds : snapshot.getChildren()){
+                    ClassObj classObj = ds.getValue(ClassObj.class);
+                    clids.add(ds.getKey());
+                    clnames.add(classObj.get_name() + " - " + classObj.get_ageGroup());
+                }
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(NewUser.this, android.R.layout.simple_spinner_item, clnames);
+                _class.setAdapter(adapter);
             }
-
             @Override
-            public void onNothingSelected(AdapterView<?> parent) { }
+            public void onCancelled(DatabaseError error) {
+                //TODO set error
+            }
         });
 
+
+
         GlobalConstants.Perm[] Perms = GlobalConstants.Perm.values();
-        ArrayList<String> roles = new ArrayList();
+        roles = new ArrayList();
         roles.add(getResources().getString(R.string.select_role));
         for (int i = 0; i < Perms.length; i++){
             roles.add(Perms[i].toString());
@@ -177,21 +154,22 @@ public class NewUser extends AppCompatActivity {
                         return;
                     }
                 }
-
-
                 if (!_password.getText().toString().equals(_confirmPassword.getText().toString())){
                     _confirmPassword.setError(getResources().getString(R.string.password_match_error));
                     _confirmPassword.requestFocus();
                     return;
                 }
+                if (roles.get(_role.getSelectedItemPosition()).equals(GlobalConstants.Perm.מדריך.toString()) && _class.getSelectedItemPosition() == 0){
+                    Toast.makeText(NewUser.this, getResources().getString(R.string.select_class_error), Toast.LENGTH_LONG).show();
+                    return;
+                }
                 UserObj user = new UserObj(_firstName.getText().toString(),
                         _lastName.getText().toString(),
                         _email.getText().toString(),
-                        null,
+                        cid,
                         _role.getSelectedItem().toString());
-                if (cid.isEmpty()) user.setCid(cids.get(_chapter.getSelectedItemPosition()));
-                else user.setCid(cid);
-                FirebaseAuth Auth = FirebaseAuth.getInstance();;
+                user.setResponsibility(clids.get(_class.getSelectedItemPosition()));
+                FirebaseAuth Auth = FirebaseAuth.getInstance();
                 Auth.createUserWithEmailAndPassword(user.getEmail(), _password.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -206,5 +184,19 @@ public class NewUser extends AppCompatActivity {
                 });
             }
         });
+
+        _role.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (roles.get(position).equals(GlobalConstants.Perm.מדריך.toString())) _class.setVisibility(View.VISIBLE);
+                else _class.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
     }
 }

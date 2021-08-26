@@ -46,7 +46,7 @@
             android:layout_height="wrap_content"
             android:text="@string/allow_order_editing"/>
 
-        <Switch
+        <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/order_edit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
@@ -98,7 +98,7 @@
             android:layout_height="match_parent"
             android:background="@drawable/share"
             android:scaleType="fitXY"
-            android:layout_margin="5dp"/>
+            android:layout_margin="5dp" />
 
     </LinearLayout>
 
@@ -118,7 +118,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="45dp"
         android:background="@drawable/text_field"
-        android:text="@string/order_ready"
+        android:text=""
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"/>

@@ -5,4 +5,6 @@ public class GlobalConstants {
     public enum leadership {איילון, דן, דרום, דרור, החוף, החורש, הצוק, השחר, חיפה, יהודה, ירושלים, הצפון, רמת_גן, שורק, תל_אביב_יפו}
     public enum ageGroup {ד, ה, ו, ז, ח, ט, י, יא, יב, ללא}
 
+    public static int passwordLength = 6;
+
 }

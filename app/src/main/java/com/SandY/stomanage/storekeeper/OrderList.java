@@ -52,6 +52,12 @@ public class OrderList extends AppCompatActivity {
         searchAction();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        printItemList(_search.getText().toString());
+    }
+
     private void attachFromXml() {
         _search = findViewById(R.id.searchText);
         _itemslist = findViewById(R.id.itemslist);
@@ -80,6 +86,10 @@ public class OrderList extends AppCompatActivity {
                         uids = new ArrayList<>();
                         orderNames = new ArrayList<>();
                         OrderDates = new ArrayList<>();
+                        oids.clear();
+                        uids.clear();
+                        orderNames.clear();
+                        OrderDates.clear();
                         for (DataSnapshot ds : snapshot.getChildren()){
                             String uid = ds.getKey();
                             DatabaseReference userRef = FirebaseDatabase.getInstance().getReference().child("Users").child(uid);
@@ -87,14 +97,31 @@ public class OrderList extends AppCompatActivity {
                                 @Override
                                 public void onDataChange(DataSnapshot userSnapshot) {
                                     UserObj tempUser = userSnapshot.getValue(UserObj.class);
-                                    if (tempUser.getResponsibility().equals(user.getResponsibility())) {
+                                    if (user.getResponsibility() != null){
+                                        if (tempUser.getResponsibility().equals(user.getResponsibility())) {
+                                            for (DataSnapshot orderDs : ds.getChildren()) {
+                                                OrderObj order = orderDs.getValue(OrderObj.class);
+                                                if (order.get_name().contains(search)) {
+                                                    if (!oids.contains(orderDs.getKey())) {
+                                                        oids.add(orderDs.getKey());
+                                                        uids.add(uid);
+                                                        orderNames.add(tempUser.getFirstName() + " " + tempUser.getLastName());
+                                                        OrderDates.add(order.get_date().get_day() + "-" + order.get_date().get_month() + "-" + order.get_date().get_year());
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                    if (user.getResponsibility() == null){
                                         for (DataSnapshot orderDs : ds.getChildren()) {
                                             OrderObj order = orderDs.getValue(OrderObj.class);
-                                            if (order.get_name().contains(search)){
-                                                oids.add(orderDs.getKey());
-                                                uids.add(uid);
-                                                orderNames.add(tempUser.getFirstName() + " " + tempUser.getLastName());
-                                                OrderDates.add(order.get_date().get_day() + "-" + order.get_date().get_month() + "-" + order.get_date().get_year());
+                                            if (order.get_name().contains(search)) {
+                                                if (!oids.contains(orderDs.getKey())) {
+                                                    oids.add(orderDs.getKey());
+                                                    uids.add(uid);
+                                                    orderNames.add(tempUser.getFirstName() + " " + tempUser.getLastName());
+                                                    OrderDates.add(order.get_date().get_day() + "-" + order.get_date().get_month() + "-" + order.get_date().get_year());
+                                                }
                                             }
                                         }
                                     }

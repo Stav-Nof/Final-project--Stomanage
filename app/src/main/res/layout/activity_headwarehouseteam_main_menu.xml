@@ -33,29 +33,42 @@
                 android:gravity="center"
                 android:layout_margin="15dp">
 
-                <TextView
-                    android:id="@+id/name"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:textColor="@color/black"
-                    android:textSize="40sp"
-                    android:text=""
-                    android:layout_margin="10dp"/>
+                    android:orientation="horizontal"
+                    android:gravity="center">
+
+                    <ImageButton
+                        android:id="@+id/logOut"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:background="@drawable/logout"
+                        android:scaleType="fitXY" />
+
+                    <TextView
+                        android:id="@+id/name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:textSize="40sp"
+                        android:layout_margin="10dp"/>
+
+                </LinearLayout>
 
                 <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/chapterIcon"
+                    android:id="@+id/classIcon"
                     android:layout_width="90dp"
                     android:layout_height="90dp"
                     android:layout_below="@+id/name"
                     android:layout_margin="12dp"
                     android:layout_marginTop="25dp"
-                    android:src="?attr/no_image"
                     app:layout_constraintTop_toTopOf="@+id/name" />
 
             </LinearLayout>
 
             <TextView
-                android:id="@+id/expand_button_0"
+                android:id="@+id/Guide_options_button"
                 style="@style/TextAppearance.AppCompat.Medium"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -64,11 +77,11 @@
                 android:foreground="?selectableItemBackground"
                 android:gravity="center"
                 android:padding="16dp"
-                android:text="Tap to toggle expansion"
+                android:text="@string/Guide_options"
                 android:textColor="#fff" />
 
             <net.cachapa.expandablelayout.ExpandableLayout
-                android:id="@+id/expandable_layout_0"
+                android:id="@+id/Guide_options"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:el_duration="500"
@@ -77,89 +90,287 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_gravity="center"
                     android:orientation="vertical">
 
-                    <TextView
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:background="#009900"
-                        android:clipToPadding="false"
-                        android:elevation="4dp"
-                        android:gravity="center"
-                        android:text="Fixed height"
-                        android:textColor="#fff" />
-                    <TextView
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:orientation="horizontal">
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/guideOrderCard"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="1dp"
+                            app:cardElevation="10dp">
+
+                            <ImageView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:scaleType="fitXY"
+                                android:src="@drawable/card_edge" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:orientation="vertical"
+                                android:padding="16dp">
+
+                                <ImageView
+                                    android:layout_width="150dp"
+                                    android:layout_height="140dp"
+                                    android:src="@drawable/orders"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="10dp"
+                                    android:text="@string/orders"
+                                    android:textColor="@color/black"
+                                    android:textSize="20sp"/>
+
+                            </LinearLayout>
+
+                        </androidx.cardview.widget.CardView>
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/orderHistoryCard"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="1dp"
+                            app:cardElevation="10dp">
+
+                            <ImageView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:scaleType="fitXY"
+                                android:src="@drawable/card_edge" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:orientation="vertical"
+                                android:padding="16dp">
+
+                                <ImageView
+                                    android:layout_width="150dp"
+                                    android:layout_height="140dp"
+                                    android:src="@drawable/order_history"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="10dp"
+                                    android:text="@string/order_history"
+                                    android:textColor="@color/black"
+                                    android:textSize="20sp"/>
+
+                            </LinearLayout>
+
+                        </androidx.cardview.widget.CardView>
+
+                    </LinearLayout>
+
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:background="#009900"
-                        android:clipToPadding="false"
-                        android:elevation="4dp"
-                        android:gravity="center"
-                        android:text="Fixed height"
-                        android:textColor="#fff" />
-                    <TextView
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:orientation="horizontal">
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/GuideOpenTabsCard"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="1dp"
+                            app:cardElevation="10dp">
+
+                            <ImageView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:scaleType="fitXY"
+                                android:src="@drawable/card_edge" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:orientation="vertical"
+                                android:padding="16dp">
+
+                                <ImageView
+                                    android:layout_width="150dp"
+                                    android:layout_height="140dp"
+                                    android:src="@drawable/open_tabs"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="10dp"
+                                    android:text="@string/open_tabs"
+                                    android:textColor="@color/black"
+                                    android:textSize="20sp"/>
+
+                            </LinearLayout>
+
+                        </androidx.cardview.widget.CardView>
+
+                        <androidx.cardview.widget.CardView
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="1dp"
+                            app:cardElevation="10dp">
+
+                            <ImageView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:scaleType="fitXY"
+                                android:src="@drawable/card_edge" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:orientation="vertical"
+                                android:padding="16dp">
+
+                                <ImageView
+                                    android:layout_width="150dp"
+                                    android:layout_height="140dp"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="10dp"
+                                    android:textColor="@color/black"
+                                    android:textSize="20sp"/>
+
+                            </LinearLayout>
+
+                        </androidx.cardview.widget.CardView>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </net.cachapa.expandablelayout.ExpandableLayout>
+
+            <TextView
+                android:id="@+id/storekeeper_options_button"
+                style="@style/TextAppearance.AppCompat.Medium"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#00b300"
+                android:elevation="6dp"
+                android:foreground="?selectableItemBackground"
+                android:gravity="center"
+                android:padding="16dp"
+                android:text="@string/storekeeper_options"
+                android:textColor="#fff" />
+
+            <net.cachapa.expandablelayout.ExpandableLayout
+                android:id="@+id/storekeeper_options"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:el_duration="500"
+                app:el_expanded="false">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:orientation="vertical">
+
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:background="#009900"
-                        android:clipToPadding="false"
-                        android:elevation="4dp"
-                        android:gravity="center"
-                        android:text="Fixed height"
-                        android:textColor="#fff" />
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:background="#009900"
-                        android:clipToPadding="false"
-                        android:elevation="4dp"
-                        android:gravity="center"
-                        android:text="Fixed height"
-                        android:textColor="#fff" />
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:background="#009900"
-                        android:clipToPadding="false"
-                        android:elevation="4dp"
-                        android:gravity="center"
-                        android:text="Fixed height"
-                        android:textColor="#fff" />
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:background="#009900"
-                        android:clipToPadding="false"
-                        android:elevation="4dp"
-                        android:gravity="center"
-                        android:text="Fixed height"
-                        android:textColor="#fff" />
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:background="#009900"
-                        android:clipToPadding="false"
-                        android:elevation="4dp"
-                        android:gravity="center"
-                        android:text="Fixed height"
-                        android:textColor="#fff" />
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:background="#009900"
-                        android:clipToPadding="false"
-                        android:elevation="4dp"
-                        android:gravity="center"
-                        android:text="Fixed height"
-                        android:textColor="#fff" />
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:background="#009900"
-                        android:clipToPadding="false"
-                        android:elevation="4dp"
-                        android:gravity="center"
-                        android:text="Fixed height"
-                        android:textColor="#fff" />
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:orientation="horizontal">
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/storekeeperOrdersCard"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="1dp"
+                            app:cardElevation="10dp">
+
+                            <ImageView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:scaleType="fitXY"
+                                android:src="@drawable/card_edge" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:orientation="vertical"
+                                android:padding="16dp">
+
+                                <ImageView
+                                    android:layout_width="150dp"
+                                    android:layout_height="140dp"
+                                    android:src="@drawable/orders"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="10dp"
+                                    android:text="@string/orders"
+                                    android:textColor="@color/black"
+                                    android:textSize="20sp"/>
+
+                            </LinearLayout>
+
+                        </androidx.cardview.widget.CardView>
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/storekeeperOpenTabsCard"
+                            android:layout_width="0dp"
+                            android:layout_weight="1"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="1dp"
+                            app:cardElevation="10dp">
+
+                            <ImageView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:scaleType="fitXY"
+                                android:src="@drawable/card_edge" />
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:gravity="center"
+                                android:orientation="vertical"
+                                android:padding="16dp">
+
+                                <ImageView
+                                    android:layout_width="150dp"
+                                    android:layout_height="140dp"
+                                    android:src="@drawable/open_tabs"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="10dp"
+                                    android:text="@string/open_tabs"
+                                    android:textColor="@color/black"
+                                    android:textSize="20sp"/>
+
+                            </LinearLayout>
+
+                        </androidx.cardview.widget.CardView>
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
@@ -169,339 +380,249 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:orientation="vertical">
+                android:orientation="horizontal">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:orientation="horizontal">
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/storekeeperCard"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="1dp"
+                    app:cardElevation="10dp">
 
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/storekeeperCard"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="1dp"
-                        app:cardElevation="10dp">
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/card_edge" />
 
-                        <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:scaleType="fitXY"
-                            android:src="@drawable/card_edge" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:gravity="center"
-                            android:orientation="vertical"
-                            android:padding="16dp">
-
-                            <ImageView
-                                android:layout_width="150dp"
-                                android:layout_height="140dp"
-                                android:src="@drawable/users"/>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
-                                android:text="@string/storekeeper"
-                                android:textColor="@color/black"
-                                android:textSize="20sp"/>
-
-                        </LinearLayout>
-
-                    </androidx.cardview.widget.CardView>
-
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/ordersCard"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="1dp"
-                        app:cardElevation="10dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="16dp">
 
                         <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:scaleType="fitXY"
-                            android:src="@drawable/card_edge" />
+                            android:layout_width="150dp"
+                            android:layout_height="140dp"
+                            android:src="@drawable/users"/>
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:gravity="center"
-                            android:orientation="vertical"
-                            android:padding="16dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/storekeeper"
+                            android:textColor="@color/black"
+                            android:textSize="20sp"/>
 
-                            <ImageView
-                                android:layout_width="150dp"
-                                android:layout_height="140dp"
-                                android:src="@drawable/orders"/>
+                    </LinearLayout>
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
-                                android:text="@string/orders"
-                                android:textColor="@color/black"
-                                android:textSize="20sp"/>
+                </androidx.cardview.widget.CardView>
 
-                        </LinearLayout>
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/stocktakingCard"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="1dp"
+                    app:cardElevation="10dp">
 
-                    </androidx.cardview.widget.CardView>
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/card_edge" />
 
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:orientation="horizontal">
-
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/equipmentCard"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="1dp"
-                        app:cardElevation="10dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="16dp">
 
                         <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:scaleType="fitXY"
-                            android:src="@drawable/card_edge" />
+                            android:layout_width="150dp"
+                            android:layout_height="140dp"
+                            android:src="@drawable/image_not_available"/>
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:gravity="center"
-                            android:orientation="vertical"
-                            android:padding="16dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/stocktaking"
+                            android:textColor="@color/black"
+                            android:textSize="20sp"/>
 
-                            <ImageView
-                                android:layout_width="150dp"
-                                android:layout_height="140dp"
-                                android:src="@drawable/equipment"/>
+                    </LinearLayout>
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
-                                android:text="@string/warehouses"
-                                android:textColor="@color/black"
-                                android:textSize="20sp"/>
+                </androidx.cardview.widget.CardView>
 
-                        </LinearLayout>
+            </LinearLayout>
 
-                    </androidx.cardview.widget.CardView>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:orientation="horizontal">
 
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/warehousesCard"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="1dp"
-                        app:cardElevation="10dp">
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/FactoryCard"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="1dp"
+                    app:cardElevation="10dp">
 
-                        <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:scaleType="fitXY"
-                            android:src="@drawable/card_edge" />
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/card_edge" />
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:gravity="center"
-                            android:orientation="vertical"
-                            android:padding="16dp">
-
-                            <ImageView
-                                android:layout_width="150dp"
-                                android:layout_height="140dp"
-                                android:src="@drawable/image_not_available"/>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
-                                android:text="@string/open_tabs"
-                                android:textColor="@color/black"
-                                android:textSize="20sp"/>
-
-                        </LinearLayout>
-
-                    </androidx.cardview.widget.CardView>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:orientation="horizontal">
-
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/factoriesCard"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="1dp"
-                        app:cardElevation="10dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="16dp">
 
                         <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:scaleType="fitXY"
-                            android:src="@drawable/card_edge" />
+                            android:layout_width="150dp"
+                            android:layout_height="140dp"
+                            android:src="@drawable/factories"/>
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:gravity="center"
-                            android:orientation="vertical"
-                            android:padding="16dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/factories"
+                            android:textColor="@color/black"
+                            android:textSize="20sp"/>
 
-                            <ImageView
-                                android:layout_width="150dp"
-                                android:layout_height="140dp"
-                                android:src="@drawable/open_orders"/>
+                    </LinearLayout>
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
-                                android:text="@string/open_orders"
-                                android:textColor="@color/black"
-                                android:textSize="20sp"/>
+                </androidx.cardview.widget.CardView>
 
-                        </LinearLayout>
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/equipmentCard"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="1dp"
+                    app:cardElevation="10dp">
 
-                    </androidx.cardview.widget.CardView>
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/card_edge" />
 
-                    <androidx.cardview.widget.CardView
-                        android:id="@+id/tempCard"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="1dp"
-                        app:cardElevation="10dp">
-
-                        <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:scaleType="fitXY"
-                            android:src="@drawable/card_edge" />
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:gravity="center"
-                            android:orientation="vertical"
-                            android:padding="16dp">
-
-                            <ImageView
-                                android:layout_width="150dp"
-                                android:layout_height="140dp"
-                                android:src="@drawable/open_orders"/>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
-                                android:text="@string/order_history"
-                                android:textColor="@color/black"
-                                android:textSize="20sp"/>
-
-                        </LinearLayout>
-
-                    </androidx.cardview.widget.CardView>
-
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:orientation="horizontal">
-
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="1dp"
-                        app:cardElevation="10dp">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="16dp">
 
                         <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:scaleType="fitXY"
-                            android:src="@drawable/card_edge" />
+                            android:layout_width="150dp"
+                            android:layout_height="140dp"
+                            android:src="@drawable/equipment"/>
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:gravity="center"
-                            android:orientation="vertical"
-                            android:padding="16dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/equipment"
+                            android:textColor="@color/black"
+                            android:textSize="20sp"/>
 
-                            <ImageView
-                                android:layout_width="150dp"
-                                android:layout_height="140dp" />
+                    </LinearLayout>
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
-                                android:text=""
-                                android:textColor="@color/black"
-                                android:textSize="20sp"/>
+                </androidx.cardview.widget.CardView>
 
-                        </LinearLayout>
+            </LinearLayout>
 
-                    </androidx.cardview.widget.CardView>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:orientation="horizontal">
 
-                    <androidx.cardview.widget.CardView
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="1dp"
-                        app:cardElevation="10dp">
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/temp1"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="1dp"
+                    app:cardElevation="10dp">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/card_edge" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="16dp">
 
                         <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:scaleType="fitXY"
-                            android:src="@drawable/card_edge" />
+                            android:layout_width="150dp"
+                            android:layout_height="140dp"/>
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:gravity="center"
-                            android:orientation="vertical"
-                            android:padding="16dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text=""
+                            android:textColor="@color/black"
+                            android:textSize="20sp"/>
 
-                            <ImageView
-                                android:layout_width="150dp"
-                                android:layout_height="140dp"/>
+                    </LinearLayout>
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
-                                android:text=""
-                                android:textColor="@color/black"
-                                android:textSize="20sp"/>
+                </androidx.cardview.widget.CardView>
 
-                        </LinearLayout>
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/temp2"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="1dp"
+                    app:cardElevation="10dp">
 
-                    </androidx.cardview.widget.CardView>
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/card_edge" />
 
-                </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <ImageView
+                            android:layout_width="150dp"
+                            android:layout_height="140dp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:text=""
+                            android:textColor="@color/black"
+                            android:textSize="20sp"/>
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
 
             </LinearLayout>
 

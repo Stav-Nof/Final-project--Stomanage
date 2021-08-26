@@ -1,5 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Projects/Final-project-Stomanage/app/src/main/res/layout-v21/activity_headwarehouseteam_main_menu.xml" value="0.36666666666666664" />
+        <entry key="..\:/Projects/Final-project-Stomanage/app/src/main/res/layout/activity_administrator_main_menu.xml" value="0.22826086956521738" />
+        <entry key="..\:/Projects/Final-project-Stomanage/app/src/main/res/layout/activity_guider_main_menu.xml" value="0.2884963768115942" />
+        <entry key="..\:/Projects/Final-project-Stomanage/app/src/main/res/layout/activity_headchapter_main_menu.xml" value="0.2246376811594203" />
+        <entry key="..\:/Projects/Final-project-Stomanage/app/src/main/res/layout/activity_headwarehouseteam_main_menu.xml" value="0.33" />
+        <entry key="..\:/Projects/Final-project-Stomanage/app/src/main/res/layout/activity_new_chapter.xml" value="0.36666666666666664" />
+        <entry key="..\:/Projects/Final-project-Stomanage/app/src/main/res/layout/activity_new_equipment.xml" value="0.2269021739130435" />
+        <entry key="..\:/Projects/Final-project-Stomanage/app/src/main/res/layout/activity_new_factory.xml" value="0.22" />
+        <entry key="..\:/Projects/Final-project-Stomanage/app/src/main/res/layout/activity_new_order.xml" value="0.36666666666666664" />
+        <entry key="..\:/Projects/Final-project-Stomanage/app/src/main/res/layout/activity_new_user.xml" value="0.2269021739130435" />
+        <entry key="..\:/Projects/Final-project-Stomanage/app/src/main/res/layout/activity_stocktaking.xml" value="0.36666666666666664" />
+        <entry key="..\:/Projects/Final-project-Stomanage/app/src/main/res/layout/activity_storekeeper_main_menu.xml" value="0.2554347826086957" />
+        <entry key="..\:/Projects/Final-project-Stomanage/app/src/main/res/layout/layout_text_Switch.xml" value="0.36666666666666664" />
+        <entry key="..\:/Projects/Final-project-Stomanage/app/src/main/res/layout/layout_text_switch.xml" value="0.36666666666666664" />
+        <entry key="..\:/Projects/Final-project-Stomanage/app/src/main/res/layout/layout_three_text.xml" value="0.36666666666666664" />
+        <entry key="..\:/Projects/Final-project-Stomanage/app/src/main/res/layout/layout_two_text.xml" value="0.36666666666666664" />
+        <entry key="..\:/Projects/Final-project-Stomanage/app/src/main/res/layout/pdf_template.xml" value="0.223731884057971" />
+        <entry key="..\:/Projects/Final-project-Stomanage/app/src/main/res/layout/popup_textview_textview_edittext_button.xml" value="0.25317028985507245" />
+      </map>
+    </option>
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>

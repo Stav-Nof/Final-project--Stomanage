@@ -1,5 +1,6 @@
 package com.SandY.stomanage.storekeeper;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -9,9 +10,9 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.Switch;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
 import com.SandY.stomanage.Adapters.AdapterTextSubTextImage;
 import com.SandY.stomanage.R;
 import com.SandY.stomanage.dataObject.ItemObj;
@@ -21,6 +22,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
@@ -29,9 +31,9 @@ public class OrderPreparation extends AppCompatActivity {
 
     EditText _search;
     ListView _itemslist;
-    TextView _header;
+    TextView _header, _close;
     ImageButton _clear;
-    Switch _edit;
+    SwitchCompat _edit;
 
     String uid;
     String cid;
@@ -45,7 +47,7 @@ public class OrderPreparation extends AppCompatActivity {
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_order_preparation);
+        setContentView(R.layout.template_activity_listview_text_button_search);
 
         Intent intent = getIntent();
         uid = intent.getStringExtra("uid");
@@ -65,6 +67,7 @@ public class OrderPreparation extends AppCompatActivity {
         _header = findViewById(R.id.header);
         _clear = findViewById(R.id.clear);
         _edit = findViewById(R.id.order_edit);
+        _close = findViewById(R.id.close);
     }
 
     private void modifyActivity(){
@@ -75,6 +78,7 @@ public class OrderPreparation extends AppCompatActivity {
                 order = snapshot.getValue(OrderObj.class);
                 _header.setText(String.format(getResources().getString(R.string.name_and_date), order.get_name(), order.getStringDate()));
                 _edit.setChecked(order.is_open());
+                _close.setText(getResources().getString(R.string.order_ready));
             }
 
             @Override
@@ -87,7 +91,7 @@ public class OrderPreparation extends AppCompatActivity {
 
     private void printItemList(String search) {
         DatabaseReference DBRef = FirebaseDatabase.getInstance().getReference().child("Warehouses").child(cid);
-        DBRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        DBRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 items = new HashMap<>();
@@ -117,7 +121,6 @@ public class OrderPreparation extends AppCompatActivity {
             }
 
         });
-
     }
 
     private void setClicks(){
@@ -136,6 +139,45 @@ public class OrderPreparation extends AppCompatActivity {
             }
         });
 
+        _close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ProgressDialog dialog = ProgressDialog.show(OrderPreparation.this, "", getResources().getString(R.string.closing_order), true);
+                dialog.show();
+
+                Set<String> keys = order.get_order().keySet();
+                for (String s : keys) {
+                    double updatedQuantity = items.get(s).get_quantity() - order.get_order().get(s);
+                    if (updatedQuantity < 0) updatedQuantity = 0;
+                    FirebaseDatabase.getInstance().getReference().child("Warehouses").child(cid).child(s).child("_quantity").setValue(updatedQuantity);
+                    if (items.get(s).is_returnedable()) {
+                        FirebaseDatabase.getInstance().getReference().child("Open Tabs").child(cid).child(uid).child(s).addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NotNull DataSnapshot snapshot) {
+                                double quantityInDB = -1;
+                                if (snapshot.exists()){
+                                    quantityInDB = snapshot.getValue(Double.class);
+                                    quantityInDB = quantityInDB + order.get_order().get(s);
+                                }
+                                else quantityInDB = order.get_order().get(s);
+                                FirebaseDatabase.getInstance().getReference().child("Open tabs").child(cid).child(uid).child(s).setValue(quantityInDB);
+                                FirebaseDatabase.getInstance().getReference().child("Orders").child(cid).child(uid).child(oid).setValue(null);
+                                order.set_open(false);
+                                order.set_taken(true);
+                                FirebaseDatabase.getInstance().getReference().child("Order history").child(cid).child(uid).child(oid).setValue(order);
+                                dialog.dismiss();
+                                finish();
+                            }
+
+                            @Override
+                            public void onCancelled(@NotNull DatabaseError error) {
+
+                            }
+                        });
+                    }
+                }
+            }
+        });
         //TODO move order to order history ,open tabs and send notification when click on order completed
     }
 

@@ -114,10 +114,24 @@
         android:background="@drawable/text_field"/>
 
     <Spinner
-        android:id="@+id/leadership"
+        android:id="@+id/Class"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@+id/role"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginTop="20dp"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:background="@drawable/text_field"/>
+
+    <Spinner
+        android:id="@+id/leadership"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/Class"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginLeft="50dp"

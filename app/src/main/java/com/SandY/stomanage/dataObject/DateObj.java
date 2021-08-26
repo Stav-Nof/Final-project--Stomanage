@@ -16,6 +16,11 @@ public class DateObj implements Serializable {
         this._year = _year;
     }
 
+    @Override
+    public String toString() {
+        return _day + "-" + _month + "-" + _year;
+    }
+
     public int get_day() {
         return _day;
     }

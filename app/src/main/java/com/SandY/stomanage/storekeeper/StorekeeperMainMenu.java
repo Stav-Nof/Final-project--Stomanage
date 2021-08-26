@@ -3,6 +3,7 @@ package com.SandY.stomanage.storekeeper;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,7 +20,8 @@ import com.google.firebase.database.ValueEventListener;
 public class StorekeeperMainMenu extends AppCompatActivity {
 
     TextView _name;
-    CardView _orders, _tabs, _quickOrder;
+    CardView _orders, _tabs;
+    ImageButton _logout;
 
     String uid;
     UserObj user;
@@ -39,7 +41,7 @@ public class StorekeeperMainMenu extends AppCompatActivity {
         _name = findViewById(R.id.name);
         _orders = findViewById(R.id.ordersCard);
         _tabs = findViewById(R.id.openTabsCard);
-        _quickOrder = findViewById(R.id.quickOrderCard);
+        _logout = findViewById(R.id.logOut);
     }
 
     private void modifyActivity(){
@@ -60,6 +62,14 @@ public class StorekeeperMainMenu extends AppCompatActivity {
     }
 
     private void setOnClickListeners() {
+        _logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                finish();
+            }
+        });
+
         _orders.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,16 +82,10 @@ public class StorekeeperMainMenu extends AppCompatActivity {
         _tabs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(StorekeeperMainMenu.this, TabsList.class);
+                intent.putExtra("cid", user.getCid());
+                startActivity(intent);
             }
         });
-
-        _quickOrder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
     }
 }

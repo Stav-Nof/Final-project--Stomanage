@@ -9,9 +9,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.SandY.stomanage.Adapters.AdapterTextSubTextImage;
 import com.SandY.stomanage.R;
 import com.SandY.stomanage.dataObject.ItemObj;
@@ -21,7 +19,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
 
 
@@ -32,6 +29,7 @@ public class ViewOrder extends AppCompatActivity {
     TextView _header;
     ImageButton _clear;
 
+    String path;
     String uid;
     String cid;
     String oid;
@@ -50,6 +48,7 @@ public class ViewOrder extends AppCompatActivity {
         setContentView(R.layout.template_activity_listview_search);
 
         Intent intent = getIntent();
+        path = intent.getStringExtra("path");
         cid = intent.getStringExtra("cid");
         uid = intent.getStringExtra("uid");
         oid = intent.getStringExtra("oid");
@@ -69,7 +68,7 @@ public class ViewOrder extends AppCompatActivity {
     }
 
     private void modifyActivity(){
-        DatabaseReference DBRef = FirebaseDatabase.getInstance().getReference().child("Orders").child(cid).child(uid).child(oid);
+        DatabaseReference DBRef = FirebaseDatabase.getInstance().getReference().child(path).child(cid).child(uid).child(oid);
         DBRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {

@@ -3,6 +3,7 @@ package com.SandY.stomanage.Guider;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,7 +20,8 @@ import com.google.firebase.database.ValueEventListener;
 public class GuiderMainMenu extends AppCompatActivity {
 
     TextView _name;
-    CardView _orders, _history, _tabs, _factories;
+    CardView _orders, _history, _tabs;
+    ImageButton _logOut;
 
     String uid;
     UserObj user;
@@ -27,7 +29,7 @@ public class GuiderMainMenu extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.template_activity_listview_search);
+        setContentView(R.layout.activity_guider_main_menu);
 
         attachFromXml();
         modifyActivity();
@@ -40,7 +42,7 @@ public class GuiderMainMenu extends AppCompatActivity {
         _orders = findViewById(R.id.ordersCard);
         _history = findViewById(R.id.orderHistoryCard);
         _tabs = findViewById(R.id.openTabsCard);
-        _factories = findViewById(R.id.factoriesCard);
+        _logOut = findViewById(R.id.logOut);
     }
 
     private void modifyActivity(){
@@ -50,13 +52,11 @@ public class GuiderMainMenu extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 user = dataSnapshot.getValue(UserObj.class);
-                _name.setText(getResources().getString(R.string.welcome)  + " " + user.getFirstName());
+                _name.setText(String.format(getResources().getString(R.string.welcome_messages), user.getFirstName()));
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                _name.setText(getResources().getString(R.string.welcome));
-            }
+            public void onCancelled(@NonNull DatabaseError error) { }
         });
     }
 
@@ -81,7 +81,7 @@ public class GuiderMainMenu extends AppCompatActivity {
             }
         });
 
-        _history.setOnClickListener(new View.OnClickListener() {
+        _tabs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(GuiderMainMenu.this, OpenTab.class);
@@ -91,7 +91,13 @@ public class GuiderMainMenu extends AppCompatActivity {
             }
         });
 
-
+        _logOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                finish();
+            }
+        });
     }
 }
 

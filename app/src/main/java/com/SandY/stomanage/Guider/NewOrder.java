@@ -38,7 +38,6 @@ public class NewOrder extends AppCompatActivity {
         attachFromXml();
         LocalDate date = LocalDate.now().plusDays(1);
         _date.updateDate(date.getYear(), date.getMonthValue() - 1, date.getDayOfMonth());
-
         setClicks();
     }
 

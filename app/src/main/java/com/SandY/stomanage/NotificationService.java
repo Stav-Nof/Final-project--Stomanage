@@ -4,9 +4,9 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.os.Build;
-
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
+
 
 
 public class NotificationService {
@@ -43,10 +43,10 @@ public class NotificationService {
                 .setContentText(text)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 // Set the intent that will fire when the user taps the notification
-//                .setContentIntent(pendingIntent)
+                //.setContentIntent(pendingIntent)
                 .setAutoCancel(true);
         // notificationId is a unique int for each notification that you must define
-        notificationManager.notify(1, builder.build());
+        notificationManager.notify((int)(Math.random() * 100), builder.build());
     }
 
     public static void NotificationFactories(Context context, String title, String text) {
@@ -60,7 +60,26 @@ public class NotificationService {
 //                .setContentIntent(pendingIntent)
                 .setAutoCancel(true);
         // notificationId is a unique int for each notification that you must define
-        notificationManager.notify(2, builder.build());
+        notificationManager.notify((int)(Math.random() * 100), builder.build());
+    }
+
+
+    public static void sendNotification(String body, String title) {
+//        // This registration token comes from the client FCM SDKs.
+//        String registrationToken = "fumkxxbJSDqJptB8mXjm5m:APA91bGNEGRM2YJGspB8WiQSqXKlujnbhtzEWYG43pwKaMwUdv69h7-0cxaTR0oEEheYmgiEYjYg4AJOMKFgXdxtvNpLcdQr8QC0nyz-FT-hYsCNeeMT0x1A9eXqMZEXmlUtsLm8Y3Gq";
+//
+//        // See documentation on defining a message payload.
+//        Message message = Message.builder()
+//                .putData("title", "or")
+//                .putData("text", "orOr")
+//                .setToken(registrationToken)
+//                .build();
+//
+//// Send a message to the device corresponding to the provided
+//// registration token.
+//        String response = FirebaseMessaging.getInstance().send(message);
+//// Response is a message ID string.
+//        System.out.println("Successfully sent message: " + response);
     }
 
 }

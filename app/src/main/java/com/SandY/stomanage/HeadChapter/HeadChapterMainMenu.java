@@ -5,13 +5,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
-
 import com.SandY.stomanage.GlobalConstants;
 import com.SandY.stomanage.R;
 import com.SandY.stomanage.dataObject.ClassObj;
@@ -25,7 +24,8 @@ import com.google.firebase.database.ValueEventListener;
 public class HeadChapterMainMenu extends AppCompatActivity {
 
     TextView _name;
-    CardView _chapter, _users, _warehouse, _factory, _classes, _newYear;
+    CardView _chapter, _users, _classes, _newYear;
+    ImageButton _logout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,10 +42,9 @@ public class HeadChapterMainMenu extends AppCompatActivity {
         _name = (TextView)findViewById(R.id.name);
         _chapter = (CardView)findViewById(R.id.chaptersCard);
         _users = (CardView)findViewById(R.id.userCard);
-        _warehouse = (CardView)findViewById(R.id.arehousCard);
-        _factory = (CardView)findViewById(R.id.factoriesCard);
         _classes = (CardView)findViewById(R.id.classesCard);
         _newYear = (CardView)findViewById(R.id.newYearCard);
+        _logout = findViewById(R.id.logOut);
     }
 
     private void modifyActivity(){
@@ -80,24 +79,6 @@ public class HeadChapterMainMenu extends AppCompatActivity {
                     @Override
                     public void onDataChange(DataSnapshot snapshot) {
                         Intent intent = new Intent(HeadChapterMainMenu.this, UsersList.class);
-                        intent.putExtra("cid", snapshot.getValue(String.class));
-                        startActivity(intent);
-                    }
-                    @Override
-                    public void onCancelled(DatabaseError error) {
-                        //TODO set error
-                    }
-                });
-            }
-        });
-        _warehouse.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DatabaseReference DBRef = FirebaseDatabase.getInstance().getReference().child("Users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("cid");
-                DBRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot snapshot) {
-                        Intent intent = new Intent(HeadChapterMainMenu.this, WarehouseItemList.class);
                         intent.putExtra("cid", snapshot.getValue(String.class));
                         startActivity(intent);
                     }
@@ -192,6 +173,14 @@ public class HeadChapterMainMenu extends AppCompatActivity {
                             }
                         })
                         .create().show();
+            }
+        });
+
+        _logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                finish();
             }
         });
     }
