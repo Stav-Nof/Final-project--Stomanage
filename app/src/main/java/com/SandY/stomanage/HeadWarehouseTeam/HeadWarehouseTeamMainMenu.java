@@ -14,6 +14,7 @@ import com.SandY.stomanage.Guider.OrderHistory;
 import com.SandY.stomanage.R;
 import com.SandY.stomanage.dataObject.UserObj;
 import com.SandY.stomanage.storekeeper.OrderList;
+import com.SandY.stomanage.storekeeper.StorekeeperMainMenu;
 import com.SandY.stomanage.storekeeper.TabsList;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -138,6 +139,7 @@ public class HeadWarehouseTeamMainMenu extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(HeadWarehouseTeamMainMenu.this, OrderList.class);
                 intent.putExtra("uid", uid);
+                intent.putExtra("cid",  user.getCid());
                 startActivity(intent);
             }
         });

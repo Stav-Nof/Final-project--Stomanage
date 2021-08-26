@@ -10,6 +10,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import com.SandY.stomanage.Adapters.AdapterTextSubText;
@@ -54,6 +55,23 @@ public class MyOrders extends AppCompatActivity {
         modifyActivity();
         setClicks();
         printItemList(_search.getText().toString());
+
+        DatabaseReference DBRef = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference ref = DBRef.child("Orders").child(cid).child(uid);
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                ordersNames.clear();
+                ordersopen.clear();
+                printedOrdersKeys.clear();
+                printItemList(_search.getText().toString());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     @Override
@@ -94,8 +112,8 @@ public class MyOrders extends AppCompatActivity {
                 for (OrderObj order : orders) {
                     if (order.get_name().contains(search)) {
                         ordersNames.add(order.get_name());
-                        if (order.is_open()) ordersopen.add(getResources().getString(R.string.open));
-                        else ordersopen.add(getResources().getString(R.string.close));
+                        if (order.is_open()) ordersopen.add("open");
+                        else ordersopen.add("close");
                         printedOrdersKeys.add(ordersKeys.get(orders.indexOf(order)));
                     }
                 }
@@ -125,11 +143,13 @@ public class MyOrders extends AppCompatActivity {
         _itemslist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(MyOrders.this, EditOrder.class);
-                intent.putExtra("uid", uid);
-                intent.putExtra("cid", cid);
-                intent.putExtra("oid", printedOrdersKeys.get(position));
-                startActivity(intent);
+                if (ordersopen.get(position).equals("open")){
+                    Intent intent = new Intent(MyOrders.this, EditOrder.class);
+                    intent.putExtra("uid", uid);
+                    intent.putExtra("cid", cid);
+                    intent.putExtra("oid", printedOrdersKeys.get(position));
+                    startActivity(intent);
+                }
             }
         });
 

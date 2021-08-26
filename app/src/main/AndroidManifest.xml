@@ -42,6 +42,7 @@
         <activity android:name=".HeadWarehouseTeam.Equipment"/>
         <activity android:name=".HeadWarehouseTeam.Factories"/>
         <activity android:name=".HeadWarehouseTeam.NewFactory"/>
+        <activity android:name=".HeadWarehouseTeam.NewEquipment"/>
         <activity android:name=".Administrator.Regiment"/>
         <activity android:name=".Administrator.Users"/>
         <activity android:name=".Administrator.NewClass"/>

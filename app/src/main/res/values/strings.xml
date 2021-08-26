@@ -2,7 +2,7 @@
     <!--global-->
     <string name="app_name">Stomanage</string>
     <string name="welcome_messages">Hello, %1$s</string>
-    <string name="name_and_date">%1$s - %2$s</string>
+    <string name="name_and_date" translatable="false">%1$s - %2$s</string>
     <string name="welcome">Welcome </string>
     <string name="ok">ok</string>
     <string name="cancel">cancel</string>
@@ -107,7 +107,7 @@
     <!--new year-->
     <string name="new_year">New year</string>
     <string name="new_year_action">New year action</string>
-    <string name="new_year_action_message">Are you sure you want to perform this action?\nNote This action is not reversible</string>
+    <string name="new_year_action_message">Are you sure you want to perform this action? Note This action is not reversible</string>
     <!--open tabs-->
     <string name="open_tabs">Open tabs</string>
     <string name="quantity_returned">Quantity returned</string>

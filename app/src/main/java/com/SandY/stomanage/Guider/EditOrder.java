@@ -8,6 +8,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.SandY.stomanage.Adapters.AdapterTextSubTextImage;
@@ -43,6 +44,9 @@ public class EditOrder extends AppCompatActivity {
     ArrayList<String> itemName;
     ArrayList<String> quantity;
 
+    DatabaseReference ref;
+    ValueEventListener valueEventListener;
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +62,24 @@ public class EditOrder extends AppCompatActivity {
         printItemList(_search.getText().toString());
         setClicks();
 
+        DatabaseReference DBRef = FirebaseDatabase.getInstance().getReference();
+        ref = DBRef.child("Orders").child(cid).child(uid).child(oid).child("_open");
+        valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                boolean b = snapshot.getValue(boolean.class);
+                if (!b){
+                    finish();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+        ref.addValueEventListener(valueEventListener);
+
     }
 
     @Override
@@ -65,6 +87,12 @@ public class EditOrder extends AppCompatActivity {
         super.onResume();
         modifyActivity();
         printItemList(_search.getText().toString());
+    }
+
+    @Override
+    protected void onDestroy() {
+        ref.removeEventListener(valueEventListener);
+        super.onDestroy();
     }
 
     private void attachFromXml() {

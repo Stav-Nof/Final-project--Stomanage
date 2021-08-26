@@ -14,6 +14,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import com.SandY.stomanage.Adapters.AdapterTextSubTextImage;
 import com.SandY.stomanage.R;
@@ -154,10 +156,22 @@ public class UserTabs extends AppCompatActivity {
                     public void onClick(View v) {
                         if (fieldDialog.getText().toString().isEmpty()) fieldDialog.setText("0");
                         double updatedquantity = Double.parseDouble(QuantityToPrint.get(position)) - Double.parseDouble(fieldDialog.getText().toString());
+                        String key = printedIids.get(position);
                         if (updatedquantity > 0)
-                            FirebaseDatabase.getInstance().getReference().child("Open tabs").child(cid).child(uid).child(printedIids.get(position)).setValue(updatedquantity);
-                        else FirebaseDatabase.getInstance().getReference().child("Open tabs").child(cid).child(uid).child(printedIids.get(position)).setValue(null);
-                        dialog.dismiss();
+                            FirebaseDatabase.getInstance().getReference().child("Open tabs").child(cid).child(uid).child(key).setValue(updatedquantity);
+                        else FirebaseDatabase.getInstance().getReference().child("Open tabs").child(cid).child(uid).child(key).setValue(null);
+                        FirebaseDatabase.getInstance().getReference().child("Warehouses").child(cid).child(key).child("_quantity").addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                double exists = snapshot.getValue(Double.class);
+                                FirebaseDatabase.getInstance().getReference().child("Warehouses").child(cid).child(key).child("_quantity").setValue(exists + Double.parseDouble(fieldDialog.getText().toString()));
+                                dialog.dismiss();
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+                            }
+                        });
                     }
                 });
             }

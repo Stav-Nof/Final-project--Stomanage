@@ -75,6 +75,7 @@ public class StorekeeperMainMenu extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(StorekeeperMainMenu.this, OrderList.class);
                 intent.putExtra("uid", uid);
+                intent.putExtra("cid",  user.getCid());
                 startActivity(intent);
             }
         });

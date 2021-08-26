@@ -10,6 +10,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import com.SandY.stomanage.Adapters.AdapterTextSubText;
 import com.SandY.stomanage.R;
@@ -29,7 +31,7 @@ public class OrderList extends AppCompatActivity {
     TextView _header;
     ImageButton _clear;
 
-    String uid;
+    String uid, cid;
     UserObj user;
 
     ArrayList<String> oids;
@@ -37,6 +39,8 @@ public class OrderList extends AppCompatActivity {
     ArrayList<String> orderNames;
     ArrayList<String> OrderDates;
 
+    DatabaseReference ref;
+    ValueEventListener valueEventListener;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,18 +48,32 @@ public class OrderList extends AppCompatActivity {
 
         Intent intent = getIntent();
         uid = intent.getStringExtra("uid");
+        cid = intent.getStringExtra("cid");
 
         attachFromXml();
         modifyActivity();
         printItemList(_search.getText().toString());
         setClicks();
         searchAction();
+
+        ref = FirebaseDatabase.getInstance().getReference().child("Orders").child(cid);
+        valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                printItemList(_search.getText().toString());
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+        ref.addValueEventListener(valueEventListener);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        printItemList(_search.getText().toString());
+    protected void onDestroy() {
+        ref.removeEventListener(valueEventListener);
+        super.onDestroy();
     }
 
     private void attachFromXml() {
